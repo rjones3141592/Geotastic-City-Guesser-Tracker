@@ -11,12 +11,15 @@ def build_settings_frame(mainframe):
 
     label1.pack(pady=10, padx = 5, anchor = 'w')
 
+def modify_darkmode():
+    pass
+
 def settings_startup():
     global connection
     # Creating file
     db_file = "GTSettings.db"
 
-    # SQL Statement on table creation
+    # SQL Statement on settings
     settings_table = """CREATE TABLE IF NOT EXISTS settings (
         darkmode BOOLEAN PRIMARY KEY,
         confirmExit BOOLEAN NOT NULL,
@@ -39,6 +42,8 @@ def settings_startup():
 
     except sqlite3.OperationalError as error_code:
         print("Failed to open settings! Error Code: ", error_code)
+
+    
 
 
 

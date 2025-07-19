@@ -28,6 +28,7 @@ dataCorrect = ttk.Frame(mainTabFrame)
 dataIncorrect = ttk.Frame(mainTabFrame)
 settingsTab = ttk.Frame(mainTabFrame)
 
+
 mainTabFrame.add(insertStatTab, text = 'Insert New Data')
 mainTabFrame.add(recentData, text = 'Recent Submisssions')
 mainTabFrame.add(dataCorrect, text = 'Correct City Stats')
@@ -43,7 +44,8 @@ tabStyle = ttk.Style()
 tabStyle.configure('TNotebook.Tab', font = ('Roboto',12))
 tabStyle.configure('TNotebook.Tab', padding=5)
 
-tabStyle.map('TNotebook.Tab', foreground = [('selected','blue')])
+
+tabStyle.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
 
 mainTabFrame.pack(expand=1, fill='both')
 
