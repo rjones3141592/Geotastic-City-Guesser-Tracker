@@ -3,12 +3,14 @@ from tkinter import ttk
 from tkinter import *
 from tkinter import messagebox as msgbox
 import city_database
+import settings
 
 # Defining Close function to ensure that database closes
 def at_exit():
     if msgbox.askokcancel("Confirm Exit", "Do you want to exit the program?"):
         city_database.db_close()
         main.destroy()
+        settings.settings_close()
 
 
 # Establishing mainframe
@@ -24,18 +26,21 @@ insertStatTab = ttk.Frame(mainTabFrame)
 recentData = ttk.Frame(mainTabFrame)
 dataCorrect = ttk.Frame(mainTabFrame)
 dataIncorrect = ttk.Frame(mainTabFrame)
-settings = ttk.Frame(mainTabFrame)
-
+settingsTab = ttk.Frame(mainTabFrame)
 
 mainTabFrame.add(insertStatTab, text = 'Insert New Data')
 mainTabFrame.add(recentData, text = 'Recent Submisssions')
 mainTabFrame.add(dataCorrect, text = 'Correct City Stats')
 mainTabFrame.add(dataIncorrect, text = 'Incorrect City Stats')
-mainTabFrame.add(settings, text = "Settings")
+
+
+mainTabFrame.add(settingsTab, text = "Settings")
+settings.build_settings_frame(settingsTab)
+
 
 # Modifying tab styling
 tabStyle = ttk.Style()
-tabStyle.configure('TNotebook.Tab', font = ('Roboto',13))
+tabStyle.configure('TNotebook.Tab', font = ('Roboto',12))
 tabStyle.configure('TNotebook.Tab', padding=5)
 
 tabStyle.map('TNotebook.Tab', foreground = [('selected','blue')])
@@ -43,6 +48,7 @@ tabStyle.map('TNotebook.Tab', foreground = [('selected','blue')])
 mainTabFrame.pack(expand=1, fill='both')
 
 city_database.db_startup()
+settings.settings_startup()
 
 main.protocol("WM_DELETE_WINDOW", at_exit)
 
