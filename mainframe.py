@@ -13,6 +13,7 @@ def at_exit():
         settings.settings_close()
 
 
+
 # Establishing mainframe
 main = tk.Tk()
 main.title('City Streak Stat Tracker')

@@ -33,7 +33,8 @@ def db_startup():
     except sqlite3.OperationalError as error_code:
         print("Failed to open Stat Database! Error Code: ", error_code)
 
-
+def db_add(city_guess, was_correct, correct_city=None):
+    pass
 
 def db_close():
     global connection
