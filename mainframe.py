@@ -1,6 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tkinter import messagebox as msgbox
+import city_database
+
+# Defining Close function to ensure that database closes
+def at_exit():
+    if msgbox.askokcancel("Confirm Exit", "Do you want to exit the program?"):
+        city_database.db_close()
+        main.destroy()
+
 
 # Establishing main
 main = tk.Tk()
@@ -22,6 +31,9 @@ mainTabFrame.add(dataIncorrect, text = 'Incorrect City Stats')
 
 mainTabFrame.pack(expand=1, fill='y')
 
+city_database.db_startup()
 
+main.protocol("WM_DELETE_WINDOW", at_exit)
 
 main.mainloop()
+
