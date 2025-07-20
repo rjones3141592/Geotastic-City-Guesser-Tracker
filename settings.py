@@ -17,8 +17,8 @@ def build_settings_frame(mainframe):
 
     darkMode_button = ttk.Checkbutton(mainframe, text = "Change appearance", style = "Custom.TCheckbutton")
 
-    label1.pack(pady=10, padx = 5, anchor = 'w')
-    darkMode_button.pack(pady = 5, padx = 5, anchor = 'w')
+    label1.grid(pady=10, padx = 5)
+    darkMode_button.grid(pady = 5, padx = 5)
 
 
 def modify_darkmode():

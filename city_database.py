@@ -32,9 +32,37 @@ def db_startup():
 
     except sqlite3.OperationalError as error_code:
         print("Failed to open Stat Database! Error Code: ", error_code)
+    finally:
+        connection.close()
 
+# Function to add city
 def db_add(city_guess, was_correct, correct_city=None):
-    pass
+
+    connection = sqlite3.connect("GTStatFile.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute("INSERT INTO cityStats (guessed_city, correct_guess, correct_city) VALUES (?, ?, ?)",(city_guess, was_correct, correct_city))
+        connection.commit()
+    except sqlite3.OperationalError as error_code:
+        print("Failed to add city. Error code: ", error_code)
+    finally: 
+        connection.close()
+
+# Function to remove most recent city
+def db_remove_recent():
+    connection = sqlite3.connect("GTStatFile.db")
+    cursor = connection.cursor()
+    try:
+
+        mostRecentID = cursor.execute("SELECT id FROM cityStats ORDER BY timestamp DESC LIMIT 1").fetchone()
+        cursor.execute("DELETE FROM cityStats WHERE id = ?", (mostRecentID[0]))
+        connection.commit()
+    except sqlite3.OperationalError as error_code:
+        print("Failed to remove most recent data!", error_code)
+    finally: 
+        connection.close()
+
+
 
 def db_close():
     global connection

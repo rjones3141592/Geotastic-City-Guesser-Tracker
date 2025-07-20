@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox as msgbox
 import city_database
 import settings
+import insertion
 
 # Defining Close function to ensure that database closes
 def at_exit():
@@ -17,13 +18,20 @@ def at_exit():
 # Establishing mainframe
 main = tk.Tk()
 main.title('City Streak Stat Tracker')
-main.geometry('800x600')
 
 # Setting up Frames via a Notebook Widget
 mainTabFrame = ttk.Notebook(main)
 
 # Created 4 tabs for 4 aspects of program
 insertStatTab = ttk.Frame(mainTabFrame)
+
+# Insert tab to be gridded, 6 x 2
+# Configuring grid to be 6 x 2
+insertStatTab.columnconfigure(0, weight = 1)
+insertStatTab.columnconfigure(1, weight = 3)
+for i in range(6):
+    insertStatTab.rowconfigure(i, weight = 1)
+
 recentData = ttk.Frame(mainTabFrame)
 dataCorrect = ttk.Frame(mainTabFrame)
 dataIncorrect = ttk.Frame(mainTabFrame)
@@ -31,6 +39,8 @@ settingsTab = ttk.Frame(mainTabFrame)
 
 
 mainTabFrame.add(insertStatTab, text = 'Insert New Data')
+insertion.build_insert_frame(insertStatTab)
+
 mainTabFrame.add(recentData, text = 'Recent Submisssions')
 mainTabFrame.add(dataCorrect, text = 'Correct City Stats')
 mainTabFrame.add(dataIncorrect, text = 'Incorrect City Stats')
@@ -48,7 +58,7 @@ tabStyle.configure('TNotebook.Tab', padding=5)
 
 tabStyle.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
 
-mainTabFrame.pack(expand=1, fill='both')
+mainTabFrame.grid()
 
 city_database.db_startup()
 settings.settings_startup()
