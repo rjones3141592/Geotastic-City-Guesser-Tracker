@@ -13,20 +13,13 @@ def at_exit():
         main.destroy()
         settings.settings_close()
 
-
-
-# Establishing mainframe
+# Establishing mainframe and sets up the notebook
 main = tk.Tk()
 main.title('City Streak Stat Tracker')
-
-# Setting up Frames via a Notebook Widget
 mainTabFrame = ttk.Notebook(main)
 
-# Created 4 tabs for 4 aspects of program
+# Created 4 tabs for 4 aspects of program using a grid layout, initialized below.
 insertStatTab = ttk.Frame(mainTabFrame)
-
-# Insert tab to be gridded, 6 x 2
-# Configuring grid to be 6 x 2
 insertStatTab.columnconfigure(0, weight = 1)
 insertStatTab.columnconfigure(1, weight = 3)
 for i in range(6):
@@ -36,7 +29,6 @@ recentData = ttk.Frame(mainTabFrame)
 dataCorrect = ttk.Frame(mainTabFrame)
 dataIncorrect = ttk.Frame(mainTabFrame)
 settingsTab = ttk.Frame(mainTabFrame)
-
 
 mainTabFrame.add(insertStatTab, text = 'Insert New Data')
 insertion.build_insert_frame(insertStatTab)
@@ -57,6 +49,7 @@ tabStyle.configure('TNotebook.Tab', padding=5)
 
 
 tabStyle.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
+
 
 mainTabFrame.grid()
 
