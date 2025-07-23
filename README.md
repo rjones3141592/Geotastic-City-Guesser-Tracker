@@ -10,3 +10,6 @@ This project is currently in progress; as of right now, only manual inputs of ci
 
 7/23/2025 - Holy crap I got in contact with Edutastic (dev of Geotastic), there might be a major revamp of this project with the possibility of importing exported completed highscore hunts!
 
+## Special Thanks
+
+To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy hell I did NOT expect that.
