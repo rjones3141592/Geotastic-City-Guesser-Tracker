@@ -4,9 +4,10 @@ from tkinter import *
 from tkinter import messagebox as msgbox
 import city_database
 import settings
-import insertion
+import manual_insertion
+from tkinter import filedialog
 
-# Defining Close function to ensure that database closes
+# Ensures the database closes
 def at_exit():
     if msgbox.askokcancel("Confirm Exit", "Do you want to exit the program?"):
         city_database.db_close()
@@ -16,42 +17,46 @@ def at_exit():
 # Establishing mainframe and sets up the notebook
 main = tk.Tk()
 main.title('City Streak Stat Tracker')
-mainTabFrame = ttk.Notebook(main)
+main_tab_frame = ttk.Notebook(main)
 
-# Created 4 tabs for 4 aspects of program using a grid layout, initialized below.
-insertStatTab = ttk.Frame(mainTabFrame)
-insertStatTab.columnconfigure(0, weight = 1)
-insertStatTab.columnconfigure(1, weight = 3)
-for i in range(6):
-    insertStatTab.rowconfigure(i, weight = 1)
+# Created 5 tabs for 5 aspects of program using a grid layout, initialized below.
+import_data_tab = ttk.Frame(main_tab_frame)
 
-recentData = ttk.Frame(mainTabFrame)
-dataCorrect = ttk.Frame(mainTabFrame)
-dataIncorrect = ttk.Frame(mainTabFrame)
-settingsTab = ttk.Frame(mainTabFrame)
+insert_stat_tab = ttk.Frame(main_tab_frame)
+insert_stat_tab.columnconfigure(0, weight = 1)
+insert_stat_tab.columnconfigure(1, weight = 3)
+insert_stat_tab.columnconfigure(2, weight = 1)
+insert_stat_tab.columnconfigure(3, weight = 2)
+for i in range(8):
+    insert_stat_tab.rowconfigure(i, weight = 1)
 
-mainTabFrame.add(insertStatTab, text = 'Insert New Data')
-insertion.build_insert_frame(insertStatTab)
+recent_data_tab = ttk.Frame(main_tab_frame)
+data_statistics_tab = ttk.Frame(main_tab_frame)
+settings_tab = ttk.Frame(main_tab_frame)
 
-mainTabFrame.add(recentData, text = 'Recent Submisssions')
-mainTabFrame.add(dataCorrect, text = 'Correct City Stats')
-mainTabFrame.add(dataIncorrect, text = 'Incorrect City Stats')
+main_tab_frame.add(import_data_tab, text = 'Import Round')
 
 
-mainTabFrame.add(settingsTab, text = "Settings")
-settings.build_settings_frame(settingsTab)
+main_tab_frame.add(insert_stat_tab, text = 'Manual Data Entry')
+manual_insertion.build_insert_frame(insert_stat_tab)
+
+main_tab_frame.add(recent_data_tab, text = 'Recent Submisssions')
+main_tab_frame.add(data_statistics_tab, text = 'Statistics')
+
+main_tab_frame.add(settings_tab, text = "Settings")
+settings.build_settings_frame(settings_tab)
 
 
-# Modifying tab styling
-tabStyle = ttk.Style()
-tabStyle.configure('TNotebook.Tab', font = ('Roboto',12))
-tabStyle.configure('TNotebook.Tab', padding=5)
+# Modifying tab styling for design purposes
+tab_style = ttk.Style()
+tab_style.configure('TNotebook.Tab', font = ('Roboto',12))
+tab_style.configure('TNotebook.Tab', padding=5)
 
 
-tabStyle.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
+tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
 
 
-mainTabFrame.grid()
+main_tab_frame.grid()
 
 city_database.db_startup()
 settings.settings_startup()

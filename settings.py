@@ -6,26 +6,26 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('darkMode', False), ('confirmExit', True), ('confirmDelete', True)"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True)"""
 
 def build_settings_frame(mainframe):
-    label1 = ttk.Label(mainframe, text = "Settings!", justify = 'left', font = ('Poppins',15))
-    label1.configure()
+    label_1 = ttk.Label(mainframe, text = "Settings!", justify = 'left', font = ('Poppins',15))
+    label_1.configure()
 
     style = ttk.Style()
     style.configure("Custom.TCheckbutton", font = ('Poppins',15))
 
-    darkMode_button = ttk.Checkbutton(mainframe, text = "Change appearance", style = "Custom.TCheckbutton")
+    dark_mode_button = ttk.Checkbutton(mainframe, text = "Change appearance", style = "Custom.TCheckbutton")
 
-    label1.grid(pady=10, padx = 5)
-    darkMode_button.grid(pady = 5, padx = 5)
+    label_1.grid(pady=10, padx = 5)
+    dark_mode_button.grid(pady = 5, padx = 5)
 
 
 def modify_darkmode():
-    connection = sqlite3.connect('GTSettings.db')
+    connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
-    darkMode = cursor.execute("SELECT value FROM settings WHERE setting = 'darkMode'")
+    dark_mode = cursor.execute("SELECT value FROM settings WHERE setting = 'dark_mode'")
 
     result = cursor.fetchone()
     
@@ -38,7 +38,7 @@ def modify_darkmode():
 
     cursor.execute("""UPDATE settings
                        SET value = ?
-                       WHERE setting = 'darkMode'""", (swap_value))
+                       WHERE setting = 'dark_mode'""", (swap_value))
     
     connection.commit()
     connection.close()
@@ -48,7 +48,7 @@ def modify_darkmode():
 def settings_startup():
     global connection
     # Creating file
-    db_file = "GTSettings.db"
+    db_file = "GT_settings.db"
 
     # SQL Statement on settings
     settings_table = """CREATE TABLE IF NOT EXISTS settings (
