@@ -6,6 +6,7 @@ import city_database
 import settings
 import manual_insertion
 import history_table
+import import_file
 from tkinter import filedialog
 
 # Ensures the database closes
@@ -45,7 +46,7 @@ data_statistics_tab = ttk.Frame(main_tab_frame)
 settings_tab = ttk.Frame(main_tab_frame)
 
 main_tab_frame.add(import_data_tab, text = 'Import Round')
-
+import_file.build_insert_frame(import_data_tab)
 
 main_tab_frame.add(insert_stat_tab, text = 'Manual Data Entry')
 manual_insertion.build_insert_frame(insert_stat_tab)
