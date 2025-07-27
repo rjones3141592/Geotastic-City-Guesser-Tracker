@@ -9,6 +9,7 @@ This project is currently in progress; as of right now, only manual inputs of ci
 # Updates:
 
 7/23/2025 - Holy crap I got in contact with Edutastic (dev of Geotastic), there might be a major revamp of this project with the possibility of importing exported completed highscore hunts!
+7/27/2025 - I got sql visualization working! You can now see the guessing history from the Guess History Tab!
 
 ## Special Thanks
 
