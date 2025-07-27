@@ -6,7 +6,7 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True)"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True)"""
 
 def build_settings_frame(mainframe):
     label_1 = ttk.Label(mainframe, text = "Settings!", justify = 'left', font = ('Poppins',15))
@@ -71,6 +71,7 @@ def settings_startup():
                 cursor.execute(default_settings)
                 connection.commit()
                 print("Successfully set default settings!")
+                return connection
 
             except sqlite3.OperationalError as error_code:
                 print("Failed to establish default settings on startup! ", error_code)
@@ -81,12 +82,24 @@ def settings_startup():
 
     except sqlite3.OperationalError as error_code:
         print("Failed to open settings! Error Code: ", error_code)
+    finally:
+        
+        connection.close() 
+
+def read_setting(setting):
+    connection = sqlite3.connect("GT_settings.db")
+    cursor = connection.cursor()
+
+    try:
+        read_setting = cursor.execute('SELECT setting FROM settings WHERE setting = ?', (setting,))
+        value = read_setting.fetchone()
+        return value[0]
     
-    return connection
+    except sqlite3.OperationalError as error_code:
+            print("Failed to read settings!", error_code)
 
-
-
-
+    finally:
+        connection.close()
 
 def settings_close():
     global connection

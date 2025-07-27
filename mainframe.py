@@ -5,6 +5,7 @@ from tkinter import messagebox as msgbox
 import city_database
 import settings
 import manual_insertion
+import history_table
 from tkinter import filedialog
 
 # Ensures the database closes
@@ -30,7 +31,16 @@ insert_stat_tab.columnconfigure(3, weight = 2)
 for i in range(8):
     insert_stat_tab.rowconfigure(i, weight = 1)
 
-recent_data_tab = ttk.Frame(main_tab_frame)
+guess_history_tab = ttk.Frame(main_tab_frame)
+for j in range(2):
+    guess_history_tab.columnconfigure(j, weight = 2)
+
+
+guess_history_tab.rowconfigure(0, weight = 1)
+guess_history_tab.rowconfigure(1, weight = 7)
+guess_history_tab.rowconfigure(2, weight = 1)
+guess_history_tab.rowconfigure(3, weight = 1)
+
 data_statistics_tab = ttk.Frame(main_tab_frame)
 settings_tab = ttk.Frame(main_tab_frame)
 
@@ -40,7 +50,9 @@ main_tab_frame.add(import_data_tab, text = 'Import Round')
 main_tab_frame.add(insert_stat_tab, text = 'Manual Data Entry')
 manual_insertion.build_insert_frame(insert_stat_tab)
 
-main_tab_frame.add(recent_data_tab, text = 'Recent Submisssions')
+main_tab_frame.add(guess_history_tab, text = 'Guess History')
+history_table.build_insert_frame(guess_history_tab)
+
 main_tab_frame.add(data_statistics_tab, text = 'Statistics')
 
 main_tab_frame.add(settings_tab, text = "Settings")
@@ -52,9 +64,7 @@ tab_style = ttk.Style()
 tab_style.configure('TNotebook.Tab', font = ('Roboto',12))
 tab_style.configure('TNotebook.Tab', padding=5)
 
-
 tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
-
 
 main_tab_frame.grid()
 

@@ -47,7 +47,7 @@ def build_insert_frame(mainframe):
     time_guess_entry.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
 
     # Button to submit the query
-    submit_button = ttk.Button(mainframe, text = 'Insert Attempt!', command = lambda *args: submitting_attempt(guessed_city_entry, guessed_state_country, correct_var, answer_city_entry, answer_stc_entry, time_guess_entry))
+    submit_button = ttk.Button(mainframe, text = 'Insert Guess', command = lambda *args: submitting_attempt(guessed_city_entry, guessed_state_country, correct_var, answer_city_entry, answer_stc_entry, time_guess_entry))
     submit_button.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
 
 # Grabs values to submit into SQL database before clearing entries
@@ -55,8 +55,12 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
     guessed_city_value = guessed_city.get()
     guessed_stc_value = guessed_stc.get()
     correct = correct_boolean.get()
-    actual_city_value = actual_city.get()
-    actual_state_country_value = actual_state_country.get()
+    if (correct):
+        actual_city_value = guessed_city_value
+        actual_state_country_value = guessed_stc_value
+    else:
+        actual_city_value = actual_city.get()
+        actual_state_country_value = actual_state_country.get()
 
     time_value = None
 
@@ -73,7 +77,6 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
     # Converting time to float, catching error in case anything other than numbers is entered
     # Only done if time is not None
     if (time.get() != ''):
-        print(time.get())
         try:
             time_value = float(time.get().strip())
         except ValueError as error_code:

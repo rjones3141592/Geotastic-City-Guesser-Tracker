@@ -12,8 +12,8 @@ def db_startup():
         guessed_city text NOT NULL,
         guessed_state_country text NOT NULL,
         correct_guess BOOLEAN NOT NULL,
-        correct_city text,
-        correct_state_country text,
+        correct_city text NOT NULL,
+        correct_state_country text NOT NULL,
         guess_time FLOAT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 
@@ -58,7 +58,36 @@ def db_remove_recent():
     try:
 
         most_recent_id = cursor.execute("SELECT id FROM city_stats ORDER BY timestamp DESC LIMIT 1").fetchone()
-        cursor.execute("DELETE FROM city_stats WHERE id = ?", (most_recent_id[0]))
+        print(most_recent_id[0])
+        cursor.execute("DELETE FROM city_stats WHERE id = ?", (most_recent_id[0],))
+        connection.commit()
+    except sqlite3.OperationalError as error_code:
+        print("Failed to remove most recent data!", error_code)
+    finally: 
+        connection.close()
+
+# Function to read all data from the table to print onto table in guess history
+def db_read_all():
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        read_all = cursor.execute('SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY id DESC')
+        data = read_all.fetchall()
+        return data
+    
+    except sqlite3.OperationalError as error_code:
+        print('Failed to read data!', error_code)
+
+    finally:
+        connection.close()
+
+def db_delete_selected(id):
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+
+        delete_selected = cursor.execute("SELECT id FROM city_stats WHERE id = ?", (id,)).fetchone()
+        cursor.execute("DELETE FROM city_stats WHERE id = ?", (delete_selected[0],))
         connection.commit()
     except sqlite3.OperationalError as error_code:
         print("Failed to remove most recent data!", error_code)
@@ -66,6 +95,8 @@ def db_remove_recent():
         connection.close()
 
 
+    
+    
 
 def db_close():
     global connection
