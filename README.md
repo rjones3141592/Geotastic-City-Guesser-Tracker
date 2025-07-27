@@ -14,4 +14,4 @@ This project is currently in progress; as of right now, only manual inputs of ci
 
 ## Special Thanks
 
-To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy hell I did NOT expect that.
+To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy cow I did NOT expect that.
