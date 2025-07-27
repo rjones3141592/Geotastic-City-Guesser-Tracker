@@ -4,7 +4,7 @@ This is a program that aims to track city guesses on highscore hunts on Geotasti
 
 ## Status
 
-This project is currently in progress; as of right now, only manual inputs of city names are possible
+This project is currently in progress; as of right now, only manual inputs of city names are possible. No releases are available at this time as it is still under production.
 
 # Updates:
 
