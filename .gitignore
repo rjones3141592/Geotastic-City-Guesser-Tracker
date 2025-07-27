@@ -1,0 +1,15 @@
+# IDE settings
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database files
+*.db
+GT_stat_file.db
+GT_settings.db
+
+# Build/dist folders
+.dist/
+build/
