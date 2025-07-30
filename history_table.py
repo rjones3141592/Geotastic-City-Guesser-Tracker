@@ -11,7 +11,7 @@ def build_insert_frame(mainframe):
 
     guess_table = ttk.Treeview(mainframe)
 
-    guess_table['columns'] = ('id','g_city', 'g_st_ctry', 'correct', 'a_city', 'a_st_ctry', 'time', 'timestamp')
+    guess_table['columns'] = ('id','g_city', 'g_st_ctry', 'correct', 't_city', 't_st_ctry', 'time', 'timestamp')
 
     # Configuring Styling
     style = ttk.Style()
@@ -29,8 +29,8 @@ def build_insert_frame(mainframe):
     guess_table.column('g_city', anchor = tk.W, width = 150)
     guess_table.column('g_st_ctry', anchor = tk.W, width = 150)
     guess_table.column('correct', anchor = tk.W, width = 75)
-    guess_table.column('a_city', anchor = tk.W, width = 150)
-    guess_table.column('a_st_ctry', anchor = tk.W, width = 150)
+    guess_table.column('t_city', anchor = tk.W, width = 150)
+    guess_table.column('t_st_ctry', anchor = tk.W, width = 150)
     guess_table.column('time', anchor = tk.W, width = 75)
     guess_table.column('timestamp', anchor = tk.W, width = 150)
 
@@ -38,8 +38,8 @@ def build_insert_frame(mainframe):
     guess_table.heading('g_city', text = 'Guess')
     guess_table.heading('g_st_ctry', text = 'State/Country')
     guess_table.heading('correct', text = 'Correct?')
-    guess_table.heading('a_city', text = 'Actual')
-    guess_table.heading('a_st_ctry', text = 'State/Country')
+    guess_table.heading('t_city', text = 'Target')
+    guess_table.heading('t_st_ctry', text = 'State/Country')
     guess_table.heading('time', text = 'Time')
     guess_table.heading('timestamp', text = 'Date/Time')
 
@@ -57,9 +57,18 @@ def build_insert_frame(mainframe):
     refresh_data(guess_table)
 
 def refresh_data(table):
+    # Check if file exists
+    if (city_database.db_exists() == False):
+        return
+    
     table.delete(*table.get_children())
 
-    data = city_database.db_read_all()
+    data = city_database.get_display_data()
+
+    # Check if file has a table at all
+    if (data == None):
+        return
+    
 
     for i, entry in enumerate(data):
         tag = 'oddrow'

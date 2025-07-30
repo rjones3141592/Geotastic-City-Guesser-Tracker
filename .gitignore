@@ -1,15 +1,13 @@
-# IDE settings
+# .vscode as it is vsc settings
 .vscode
 
-# Python cache
+# Any caching
 __pycache__
 *.pyc
 
-# Local database files
+# Any and all database files; those will be found locally
 *.db
-GT_stat_file.db
-GT_settings.db
 
-# Build/dist folders
+# Not needed yet at this time.
 .dist/
 build/

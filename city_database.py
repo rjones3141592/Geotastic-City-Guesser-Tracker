@@ -1,4 +1,5 @@
 import sqlite3
+import os
 connection = None
 
 def db_startup():
@@ -38,8 +39,11 @@ def db_startup():
     finally:
         connection.close()
 
+def db_exists():
+    return os.path.isfile('GT_stat_file.db')
+
 # Function to add city
-def db_add(city_guess, stc_guess, was_correct, correct_city = None, correct_stc = None, guess_time = None):
+def db_add(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_time = None):
 
     connection = sqlite3.connect("GT_stat_file.db")
     cursor = connection.cursor()
@@ -77,9 +81,38 @@ def db_read_all():
     
     except sqlite3.OperationalError as error_code:
         print('Failed to read data!', error_code)
+        return None
 
     finally:
         connection.close()
+
+def get_display_data():
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        read_all = cursor.execute('SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY id DESC')
+        data = read_all.fetchall()
+
+        display_data = []
+        for row in data:
+            row_list = list(row)
+
+            if row_list[3] == 1:
+                row_list[3] = 'Yes'
+            else:
+                row_list[3] = 'No'
+            row = tuple(row_list)
+
+            display_data.append(row)
+        return display_data
+    
+    except sqlite3.OperationalError as error_code:
+        print('Failed to read data!', error_code)
+        return None
+
+    finally:
+        connection.close()
+
 
 def db_delete_selected(id):
     connection = sqlite3.connect("GT_stat_file.db")

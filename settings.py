@@ -6,7 +6,7 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True)"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', '92017cafe1fd478e936a4c1e60014148')"""
 
 def build_settings_frame(mainframe):
     label_1 = ttk.Label(mainframe, text = "Settings!", justify = 'left', font = ('Poppins',15))
@@ -42,8 +42,6 @@ def modify_darkmode():
     
     connection.commit()
     connection.close()
-
-        
 
 def settings_startup():
     global connection
@@ -91,7 +89,7 @@ def read_setting(setting):
     cursor = connection.cursor()
 
     try:
-        read_setting = cursor.execute('SELECT setting FROM settings WHERE setting = ?', (setting,))
+        read_setting = cursor.execute('SELECT value FROM settings WHERE setting = ?', (setting,))
         value = read_setting.fetchone()
         return value[0]
     
