@@ -12,6 +12,8 @@ This project is currently in progress; as of right now, only manual inputs of ci
 
 7/27/2025 - I got sql visualization working! You can now see the guessing history from the Guess History Tab!
 
+7/29/2025 - Importing of JSON files downloadable after rounds now work! I need to modify the manual insertion to also rely on API calls.
+
 ## Special Thanks
 
 To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy cow I did NOT expect that.
