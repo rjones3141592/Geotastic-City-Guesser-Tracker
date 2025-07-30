@@ -4,8 +4,7 @@ This is a program that aims to track city guesses on highscore hunts on Geotasti
 
 ## Status
 
-This project is currently in progress; as of right now, only manual inputs of city names are possible. No releases are available at this time as it is still under production.
-
+This project is currently in progress; as of right now, both manual insertions and importing of files works!
 # Updates:
 
 7/23/2025 - Holy crap I got in contact with Edutastic (dev of Geotastic), there might be a major revamp of this project with the possibility of importing exported completed highscore hunts!
