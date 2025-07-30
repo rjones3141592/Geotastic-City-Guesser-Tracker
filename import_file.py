@@ -37,8 +37,6 @@ def load_file():
 
     read_json.read_for_db_input_auto(file_path, api_list)
 
-
-
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
 # © 2025 Geoapify GmbH
@@ -95,4 +93,3 @@ def batch_reverse(batch_list):
 
     return results
 
-        

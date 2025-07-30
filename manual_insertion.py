@@ -2,8 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from tkinter import messagebox as msgbox
-import sqlite3
-import city_database
+import read_json
+import requests
+import settings
+
+REQUESTS_PER_SECOND = 5
+GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search"
 
 def build_insert_frame(mainframe):
     # Setting up GUI layout of insertion tab
@@ -52,6 +56,9 @@ def build_insert_frame(mainframe):
 
 # Grabs values to submit into SQL database before clearing entries
 def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city = None, actual_state_country = None, time = None):
+    guess_api = None
+    actual_api = None
+
     guessed_city_value = guessed_city.get()
     guessed_stc_value = guessed_stc.get()
     correct = correct_boolean.get()
@@ -95,7 +102,12 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
     actual_city.delete(0,END)
     actual_state_country.delete(0,END)
 
-    city_database.db_add(guessed_city_value, guessed_stc_value, correct, actual_city_value, actual_state_country_value, time_value)
+    guess_api = geocode_search(guessed_city_value, guessed_stc_value)
+
+    if (not correct):
+        actual_api = geocode_search(actual_city_value, actual_state_country_value)
+
+    read_json.read_for_db_input_manual(guess_api, correct_boolean.get(), actual_api, time_value)
 
 # Hides and shows manual input's incorrect city.
 def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_stc_label, ans_stc_entry, submit_button, time_label, time_entry):
@@ -128,4 +140,20 @@ def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_
         time_entry.grid_remove()
         time_entry.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
 
+# This function is adapted from Geoapify's MIT-licensed sample code
+# Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
+# © 2025 Geoapify GmbH
+
+def geocode_search(city, country):
+    params = {
+        'text': city + ', ' + country,
+        'apiKey': settings.read_setting('api_key'),
+        'format': 'json',
+        'type': 'city'
+    }
+
+    output = requests.get(url = GEOAPIFY_API_URL, params = params)
     
+    data = output.json()
+
+    return data
