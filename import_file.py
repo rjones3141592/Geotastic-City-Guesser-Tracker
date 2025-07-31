@@ -6,11 +6,9 @@ from pathlib import Path
 from tkinter import messagebox as msgbox
 import read_json
 import settings
-
 import requests
 import logging
 from time import sleep
-import json
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 
 data = None
@@ -20,13 +18,13 @@ logger = logging.getLogger(__name__)
 REQUESTS_PER_SECOND = 5
 GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/reverse"
 
-def build_insert_frame(mainframe):
-    insert_file_button = ttk.Button(mainframe, text = 'Import JSON File', command = lambda *args: load_file())
-    insert_file_button.grid(row = 0, column = 0, padx = 5, pady = 5)
-
 def load_file():
     file_path = Path(filedialog.askopenfilename())
 
+    # Do nothing if no file was imported.
+    if (file_path.suffix == ''):
+        return
+    
     if (file_path.suffix != '.json'):
         msgbox.showerror(title = 'Error in Import!', message = 'A non JSON file has been imported!')
         return
@@ -89,7 +87,7 @@ def batch_reverse(batch_list):
     wait(tasks, return_when = ALL_COMPLETED)
     results = [task.result() for task in tasks]
 
-    print(results)
+
 
     return results
 

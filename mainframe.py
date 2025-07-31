@@ -4,7 +4,7 @@ from tkinter import *
 from tkinter import messagebox as msgbox
 import city_database
 import settings
-import manual_insertion
+import data_insertion
 import history_table
 import import_file
 from tkinter import filedialog
@@ -15,6 +15,9 @@ def at_exit():
         city_database.db_close()
         main.destroy()
         settings.settings_close()
+
+def return_main():
+    return main
 
 # Establishing mainframe and sets up the notebook
 main = tk.Tk()
@@ -45,11 +48,8 @@ guess_history_tab.rowconfigure(3, weight = 1)
 data_statistics_tab = ttk.Frame(main_tab_frame)
 settings_tab = ttk.Frame(main_tab_frame)
 
-main_tab_frame.add(import_data_tab, text = 'Import Round')
-import_file.build_insert_frame(import_data_tab)
-
-main_tab_frame.add(insert_stat_tab, text = 'Manual Data Entry')
-manual_insertion.build_insert_frame(insert_stat_tab)
+main_tab_frame.add(insert_stat_tab, text = 'Data Entry')
+data_insertion.build_insert_frame(insert_stat_tab)
 
 main_tab_frame.add(guess_history_tab, text = 'Guess History')
 history_table.build_insert_frame(guess_history_tab)
