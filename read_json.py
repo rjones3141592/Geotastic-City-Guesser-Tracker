@@ -1,5 +1,6 @@
 import json
 import city_database
+import history_table
 
 # Exports list in [lat, lon] format of list
 def read_for_api_call(json_file):
@@ -95,7 +96,6 @@ def read_for_db_input_manual(guessed_api, correct, target_api = None, time = Non
 
     city_database.db_add(guessed_city, guessed_stc, score, target_city, target_stc, guess_time)
 
-
 # Helper function for determining whether to abbreviate the state and country
 def abbreviation_decision(json_info):
         
@@ -116,7 +116,10 @@ def abbreviation_decision(json_info):
             state = json_info['state']
             state_code = json_info['state_code']
 
-    valid_stated_nations = ['US','DE','UK','IN']
+    if (country_code == 'gb'):
+        country_code = 'uk'
+    
+    valid_stated_nations = ['US','DE','UK','IN','GB']
 
     if state != None and country_code.upper() in valid_stated_nations:
         if len(state + ', ' + country_code) > 25:

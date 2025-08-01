@@ -4,10 +4,11 @@ from tkinter import *
 from tkinter import messagebox as msgbox
 import city_database
 import settings
+import stat_queries
 
 def build_insert_frame(mainframe):
     tab_sub_header = ttk.Label(mainframe, text = "Guess History", font = ('Poppins',16))
-    tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 5)
+    tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 10)
 
     guess_table = ttk.Treeview(mainframe)
 
@@ -46,13 +47,15 @@ def build_insert_frame(mainframe):
     guess_table.grid(row = 1, column = 0, columnspan = 2)
 
     refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data(guess_table))
-    refresh_button.grid(row = 0, column = 1, sticky = 'e', padx = 5, pady = 5)
+    refresh_button.grid(row = 0, column = 1, sticky = 'e', padx = 5, pady = 10)
 
     delete_recent = ttk.Button(mainframe, text = 'Delete Recent', command = lambda *args: delete_most_recent(guess_table))
-    delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = 5, pady = 5)
+    delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = 5, pady = 10)
 
     del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected(guess_table))
-    del_selected.grid(row = 2, column = 1, sticky = 'e', padx = 5, pady = 5)
+    del_selected.grid(row = 2, column = 1, sticky = 'e', padx = 5, pady = 10)
+
+    det_outdated = ttk.Label(mainframe, text = 'Table outdated! Please refresh.', font = ('Poppins',12))
 
     refresh_data(guess_table)
 
@@ -76,6 +79,8 @@ def refresh_data(table):
             tag = 'evenrow'
         
         table.insert(parent = '', index = 'end', values = entry, tags = (tag))
+
+    stat_queries.count_correct_incorrect()
 
 
 def delete_most_recent(table):

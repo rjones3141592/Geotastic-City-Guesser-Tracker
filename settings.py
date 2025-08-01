@@ -6,19 +6,18 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', '92017cafe1fd478e936a4c1e60014148')"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', '')"""
 
 def build_settings_frame(mainframe):
-    label_1 = ttk.Label(mainframe, text = "Settings!", justify = 'left', font = ('Poppins',15))
-    label_1.configure()
+    header_label = ttk.Label(mainframe, text = "Settings:", font = ('Poppins',16))
+    header_label.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 5)
 
     style = ttk.Style()
-    style.configure("Custom.TCheckbutton", font = ('Poppins',15))
+    style.configure("Custom.TCheckbutton", font = ('Poppins',12))
 
     dark_mode_button = ttk.Checkbutton(mainframe, text = "Change appearance", style = "Custom.TCheckbutton")
 
-    label_1.grid(pady=10, padx = 5)
-    dark_mode_button.grid(pady = 5, padx = 5)
+    dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
 
 
 def modify_darkmode():

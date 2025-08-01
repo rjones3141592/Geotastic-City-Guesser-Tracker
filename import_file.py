@@ -35,6 +35,8 @@ def load_file():
 
     read_json.read_for_db_input_auto(file_path, api_list)
 
+    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!\nBe sure to refresh the table to see the update.")
+
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
 # © 2025 Geoapify GmbH

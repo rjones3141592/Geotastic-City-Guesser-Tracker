@@ -62,7 +62,6 @@ def db_remove_recent():
     try:
 
         most_recent_id = cursor.execute("SELECT id FROM city_stats ORDER BY timestamp DESC LIMIT 1").fetchone()
-        print(most_recent_id[0])
         cursor.execute("DELETE FROM city_stats WHERE id = ?", (most_recent_id[0],))
         connection.commit()
     except sqlite3.OperationalError as error_code:
@@ -126,10 +125,6 @@ def db_delete_selected(id):
         print("Failed to remove most recent data!", error_code)
     finally: 
         connection.close()
-
-
-    
-    
 
 def db_close():
     global connection

@@ -13,22 +13,22 @@ GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search"
 def build_insert_frame(mainframe):
     # Setting up GUI layout of insertion tab
     tab_label = ttk.Label(mainframe, text = "Insert recent guess here. Format it to be City, State or City, Country", font = ('Poppins',12))
-    tab_label.grid(row = 0, column = 1, sticky = 'ew', padx = 5, pady = 5)
+    tab_label.grid(row = 0, column = 1, sticky = 'ew', padx = 5, pady = 15)
 
     guessed_city_label = ttk.Label(mainframe, text = "Guessed City:", font = ('Poppins',11))
-    guessed_city_label.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'e')
+    guessed_city_label.grid(row = 1, column = 0, padx = 5, pady = 15, sticky = 'e')
 
     guessed_city_entry = ttk.Entry(mainframe, width = 30)
-    guessed_city_entry.grid(row = 1, column = 1, sticky = 'ew', padx = 5, pady = 5)
+    guessed_city_entry.grid(row = 1, column = 1, sticky = 'ew', padx = 5, pady = 15)
 
     guessed_stc_label = ttk.Label(mainframe, text = 'State/Country:', font = ('Poppins', 11))
-    guessed_stc_label.grid(row = 1, column = 2, padx = 5, pady = 5)
+    guessed_stc_label.grid(row = 1, column = 2, padx = 5, pady = 15)
 
     guessed_state_country = ttk.Entry(mainframe, width = 15)
-    guessed_state_country.grid(row = 1, column = 3, sticky = 'ew', padx = 5, pady = 5)
+    guessed_state_country.grid(row = 1, column = 3, sticky = 'ew', padx = 5, pady = 15)
 
     correct_label = ttk.Label(mainframe, text = 'Was it correct?', font = ('Poppins', 11))
-    correct_label.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = 'e')
+    correct_label.grid(row = 2, column = 0, padx = 5, pady = 15, sticky = 'e')
 
     # Default selection for "was it correct" will be True.
     correct_var = tk.BooleanVar(value = True)
@@ -46,18 +46,18 @@ def build_insert_frame(mainframe):
     answer_stc_entry = ttk.Entry(mainframe, width = 15)
 
     time_guess_label = ttk.Label(mainframe, text = 'Time Taken (optional):', font = ('Poppins',11))
-    time_guess_label.grid(row = 3, column = 0, padx = 5, pady = 5)
+    time_guess_label.grid(row = 3, column = 0, padx = 5, pady = 15)
 
     time_guess_entry = ttk.Entry(mainframe, width = 15)
-    time_guess_entry.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
+    time_guess_entry.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 15)
 
     # Button to submit the query
     submit_button = ttk.Button(mainframe, text = 'Insert Guess', command = lambda *args: submitting_attempt(guessed_city_entry, guessed_state_country, correct_var, answer_city_entry, answer_stc_entry, time_guess_entry))
-    submit_button.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
+    submit_button.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 15)
 
     # Stuff for importation
     insert_file_button = ttk.Button(mainframe, text = 'Import JSON File', command = lambda *args: import_file.load_file())
-    insert_file_button.grid(row = 0, column = 0, padx = 5, pady = 5)
+    insert_file_button.grid(row = 0, column = 0, padx = 5, pady = 15)
 
 # Grabs values to submit into SQL database before clearing entries
 def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city = None, actual_state_country = None, time = None):
@@ -114,6 +114,10 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
 
     read_json.read_for_db_input_manual(guess_api, correct_boolean.get(), actual_api, time_value)
 
+    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!\nBe sure to refresh the table to see the update.")
+
+    
+
 # Hides and shows manual input's incorrect city.
 def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_stc_label, ans_stc_entry, submit_button, time_label, time_entry):
     if (checkbox_status.get()): # Onvalue is True
@@ -123,27 +127,27 @@ def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_
         ans_stc_entry.grid_remove()
 
         submit_button.grid_remove()
-        submit_button.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
+        submit_button.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 15)
 
         time_label.grid_remove()
         time_label.grid(row = 3, column = 0, padx = 5, pady = 5, sticky = 'e')
 
         time_entry.grid_remove()
-        time_entry.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
+        time_entry.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 15)
     else:
         ans_city_label.grid(row = 3, column = 0, padx = 5, pady = 5, sticky = 'e')
-        ans_city_entry.grid(row = 3, column = 1, sticky = 'ew', padx = 5, pady = 5)
+        ans_city_entry.grid(row = 3, column = 1, sticky = 'ew', padx = 5, pady = 15)
         ans_stc_label.grid(row = 3, column = 2, padx = 5, pady = 5)
-        ans_stc_entry.grid(row = 3, column = 3, sticky = 'ew', padx = 5, pady = 5)
+        ans_stc_entry.grid(row = 3, column = 3, sticky = 'ew', padx = 5, pady = 15)
 
         submit_button.grid_remove()
-        submit_button.grid(row = 5, column = 1, sticky = 'w', padx = 5, pady = 5)
+        submit_button.grid(row = 5, column = 1, sticky = 'w', padx = 5, pady = 15)
 
         time_label.grid_remove()
-        time_label.grid(row = 4, column = 0, padx = 5, pady = 5, sticky = 'e')
+        time_label.grid(row = 4, column = 0, padx = 5, pady = 15, sticky = 'e')
 
         time_entry.grid_remove()
-        time_entry.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
+        time_entry.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 15)
 
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
