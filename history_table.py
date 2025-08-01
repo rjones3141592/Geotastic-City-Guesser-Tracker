@@ -6,10 +6,14 @@ import city_database
 import settings
 import stat_queries
 
+# Module level variable set to guess_table; allows Table to be refreshed when needed)
+guess_table = None
+
 def build_insert_frame(mainframe):
     tab_sub_header = ttk.Label(mainframe, text = "Guess History", font = ('Poppins',16))
     tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 10)
 
+    global guess_table
     guess_table = ttk.Treeview(mainframe)
 
     guess_table['columns'] = ('id','g_city', 'g_st_ctry', 'correct', 't_city', 't_st_ctry', 'time', 'timestamp')
@@ -46,25 +50,23 @@ def build_insert_frame(mainframe):
 
     guess_table.grid(row = 1, column = 0, columnspan = 2)
 
-    refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data(guess_table))
+    refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data())
     refresh_button.grid(row = 0, column = 1, sticky = 'e', padx = 5, pady = 10)
 
-    delete_recent = ttk.Button(mainframe, text = 'Delete Recent', command = lambda *args: delete_most_recent(guess_table))
+    delete_recent = ttk.Button(mainframe, text = 'Delete Recent', command = lambda *args: delete_most_recent())
     delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = 5, pady = 10)
 
-    del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected(guess_table))
+    del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected())
     del_selected.grid(row = 2, column = 1, sticky = 'e', padx = 5, pady = 10)
 
-    det_outdated = ttk.Label(mainframe, text = 'Table outdated! Please refresh.', font = ('Poppins',12))
+    refresh_data()
 
-    refresh_data(guess_table)
-
-def refresh_data(table):
+def refresh_data():
     # Check if file exists
     if (city_database.db_exists() == False):
         return
     
-    table.delete(*table.get_children())
+    guess_table.delete(*guess_table.get_children())
 
     data = city_database.get_display_data()
 
@@ -78,12 +80,12 @@ def refresh_data(table):
         if (i % 2 == 0):
             tag = 'evenrow'
         
-        table.insert(parent = '', index = 'end', values = entry, tags = (tag))
+        guess_table.insert(parent = '', index = 'end', values = entry, tags = (tag))
 
     stat_queries.count_correct_incorrect()
 
 
-def delete_most_recent(table):
+def delete_most_recent():
     if (settings.read_setting('confirm_delete')):
         if msgbox.askokcancel("Confirm Delete", "Are you sure you want to delete the most recent entry?"):
             city_database.db_remove_recent()
@@ -91,17 +93,17 @@ def delete_most_recent(table):
         city_database.db_remove_recent()
 
     
-    refresh_data(table)
+    refresh_data()
 
-def delete_selected(table):
-    selection = table.focus()
+def delete_selected():
+    selection = guess_table.focus()
     
     if (selection == ''):
         msgbox.showerror(title = 'Missing Parameters', message = 'You must select a guess to delete!')
         return
 
     # Grabbing unique ID identifier for SQL usage purposes
-    selection_values = table.item(selection)
+    selection_values = guess_table.item(selection)
     id = selection_values['values'][0]
 
     if (settings.read_setting('confirm_delete')):
@@ -111,7 +113,7 @@ def delete_selected(table):
     else:
         city_database.db_delete_selected(getint(id))
 
-    refresh_data(table)
+    refresh_data()
 
 
 

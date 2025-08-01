@@ -1,5 +1,3 @@
-import tkinter as tk
-from tkinter import ttk
 from tkinter import *
 from tkinter import filedialog
 from pathlib import Path
@@ -10,6 +8,7 @@ import requests
 import logging
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+import history_table
 
 data = None
 
@@ -35,7 +34,9 @@ def load_file():
 
     read_json.read_for_db_input_auto(file_path, api_list)
 
-    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!\nBe sure to refresh the table to see the update.")
+    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
+
+    history_table.refresh_data()
 
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/

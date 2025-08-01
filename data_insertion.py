@@ -6,6 +6,7 @@ import read_json
 import requests
 import settings
 import import_file
+import history_table
 
 REQUESTS_PER_SECOND = 5
 GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search"
@@ -114,7 +115,9 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
 
     read_json.read_for_db_input_manual(guess_api, correct_boolean.get(), actual_api, time_value)
 
-    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!\nBe sure to refresh the table to see the update.")
+    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
+
+    history_table.refresh_data()
 
     
 

@@ -5,16 +5,17 @@ from tkinter import messagebox as msgbox
 import city_database
 import stat_queries
 import chart_creations
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+overall_tab = None
 
 def build_insert_frame(mainframe):
+    global overall_tab
+
     stat_tabs = ttk.Notebook(mainframe)
 
     overall_tab = ttk.Frame(stat_tabs)
     other_tab = ttk.Frame(stat_tabs)
-
-
-
 
     stat_tabs.add(overall_tab, text = 'Overall Stats')
     overall_build_insert_frame(overall_tab)
@@ -50,9 +51,13 @@ def overall_build_insert_frame(frame):
     value_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
     value_label.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
 
+    refresh_pie_chart()
+
+def refresh_pie_chart():
     accuracy_values = stat_queries.count_correct_incorrect()
 
-    accuracy_chart = chart_creations.percent_correct_pie(accuracy_values, frame)
+    accuracy_chart, fig = chart_creations.percent_correct_pie(accuracy_values)
 
-    accuracy_chart.get_tk_widget().grid(row = 0, column = 99, padx = (300,0), pady = 0, rowspan = 7, sticky = 'e')
+    accuracy_chart = FigureCanvasTkAgg(fig, overall_tab)
 
+    accuracy_chart.get_tk_widget().grid(row = 0, column = 2, padx = (300,0), pady = 0, rowspan = 7, sticky = 'e')

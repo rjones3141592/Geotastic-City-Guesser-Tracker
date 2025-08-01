@@ -1,8 +1,7 @@
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
 
-def percent_correct_pie(data, frame):
+def percent_correct_pie(data):
     right_wrong_labels = ['Correct','Incorrect']
 
     fig = Figure(figsize = (3, 3))
@@ -18,5 +17,5 @@ def percent_correct_pie(data, frame):
     accuracy_figure.pie(data, radius = 1, labels = ['',''], autopct = '%0.2f%%', shadow = False, colors = ['#8AEA95', '#E5716B'])
 
     accuracy_figure.legend(loc = 'upper right', labels = right_wrong_labels)
-    acc_pie = FigureCanvasTkAgg(fig, frame)
-    return acc_pie
+    
+    return accuracy_figure, fig
