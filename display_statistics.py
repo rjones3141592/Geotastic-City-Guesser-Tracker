@@ -39,13 +39,13 @@ def overall_build_insert_frame(frame):
     country_label = ttk.Label(frame, text = 'Most Played Country: ', font = ('Poppins',12))
     country_label.grid(row = 4, column = 0, sticky = 'e', padx = 5, pady = 5)
 
-    value_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
+    value_label = ttk.Label(frame, text = stat_queries.percent_accuracy(), font = ('Poppins',12))
     value_label.grid(row = 1, column = 1, sticky = 'w', padx = 5, pady = 5)
 
-    value_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
+    value_label = ttk.Label(frame, text = stat_queries.average_time(), font = ('Poppins',12))
     value_label.grid(row = 2, column = 1, sticky = 'w', padx = 5, pady = 5)
 
-    value_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
+    value_label = ttk.Label(frame, text = stat_queries.longest_streak(), font = ('Poppins',12))
     value_label.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
 
     value_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
@@ -60,4 +60,4 @@ def refresh_pie_chart():
 
     accuracy_chart = FigureCanvasTkAgg(fig, overall_tab)
 
-    accuracy_chart.get_tk_widget().grid(row = 0, column = 2, padx = (300,0), pady = 0, rowspan = 7, sticky = 'e')
+    accuracy_chart.get_tk_widget().grid(row = 0, column = 2, padx = (275,0), pady = 0, rowspan = 7, sticky = 'e')
