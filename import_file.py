@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from pathlib import Path
 from tkinter import messagebox as msgbox
+import display_statistics
 import read_json
 import settings
 import requests
@@ -9,7 +10,7 @@ import logging
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 import history_table
-
+from display_statistics import overall_build_insert_frame
 data = None
 
 logger = logging.getLogger(__name__)
@@ -37,6 +38,8 @@ def load_file():
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
     history_table.refresh_data()
+    display_statistics.refresh_labels()
+
 
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/

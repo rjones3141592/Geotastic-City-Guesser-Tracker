@@ -7,6 +7,7 @@ import requests
 import settings
 import import_file
 import history_table
+import display_statistics
 
 REQUESTS_PER_SECOND = 5
 GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search"
@@ -118,6 +119,7 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
     history_table.refresh_data()
+    display_statistics.refresh_labels()
 
     
 

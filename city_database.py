@@ -42,6 +42,26 @@ def db_startup():
 def db_exists():
     return os.path.isfile('GT_stat_file.db')
 
+# Checking if city_stats db file has any inputted values or if it is just blank.
+def db_is_empty():
+    if not db_exists():
+        return True
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute('SELECT name FROM sqlite_master WHERE name = "city_stats"')
+        if cursor.fetchone() is None:
+            return True
+        
+        cursor.execute('SELECT COUNT(*) FROM city_stats')
+
+        return cursor.fetchone()[0] == 0
+    except sqlite3.OperationalError as error_code:
+        print("Failed to add city. Error code: ", error_code)
+        return True
+    finally: 
+        connection.close()
+
 # Function to add city
 def db_add(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_time = None):
 
