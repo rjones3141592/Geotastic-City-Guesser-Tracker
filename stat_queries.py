@@ -1,5 +1,6 @@
 import sqlite3
 import city_database
+from iso3166 import countries
 connection = None
 
 STAT_FILE = "GT_stat_file.db"
@@ -130,5 +131,44 @@ def longest_streak():
         connection.close()
 
 # Uses Dictionary to extract most played country
-def most_played_countries():
-    pass
+def most_played_country():
+    # Empty_case check
+    if city_database.db_is_empty():
+        return 'N/A'
+
+    countries_played = {}
+
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        read_all = cursor.execute('SELECT correct_state_country FROM city_stats ORDER BY id DESC')
+        data = read_all.fetchall()
+
+        # Goes through each entry, finding sequences of '1' answers.
+        for entry in data:
+            if ',' in entry[0]:
+                entry_list = entry[0].split(',')
+                country_name = entry_list[1].strip()
+            else:
+                country_name = entry[0]
+
+            if country_name in countries_played:
+                countries_played[country_name] += 1
+            else:
+                countries_played[country_name] = 1
+
+        most_played = max(countries_played, key = lambda x: countries_played[x])
+
+        most_country_name = countries.get(most_played).name
+        
+        return most_country_name
+                
+    
+    except sqlite3.OperationalError as error_code:
+        print('Failed to read data!', error_code)
+        return None
+
+    finally:
+        connection.close()
+
+    

@@ -55,21 +55,23 @@ def overall_build_insert_frame(frame):
     value_streak_label = ttk.Label(frame, text = stat_queries.longest_streak(), font = ('Poppins',12))
     value_streak_label.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
 
-    value_country_label = ttk.Label(frame, text = 'Placeholder Value', font = ('Poppins',12))
+    value_country_label = ttk.Label(frame, text = stat_queries.most_played_country(), font = ('Poppins',12))
     value_country_label.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
 
     refresh_pie_chart()
 
 def refresh_labels():
-    global value_accuracy_label, value_time_label, value_streak_label
+    global value_accuracy_label, value_time_label, value_streak_label, value_country_label
 
     accuracy_value = stat_queries.percent_accuracy()
     avg_time = stat_queries.average_time()
     longest_streak = stat_queries.longest_streak()
+    most_played = stat_queries.most_played_country()
 
     value_accuracy_label.config(text = accuracy_value)
     value_time_label.config(text = avg_time)
     value_streak_label.config(text = longest_streak)
+    value_country_label.config(text = most_played)
 
     refresh_pie_chart()
 

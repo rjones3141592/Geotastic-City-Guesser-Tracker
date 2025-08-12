@@ -119,7 +119,9 @@ def abbreviation_decision(json_info):
     if (country_code == 'gb'):
         country_code = 'uk'
     
-    valid_stated_nations = ['US','DE','UK','IN','GB']
+    # Valid nations with states based on own analysis; United States, Germany, Brazil, United Kingdom, India
+    # Will add more based on user request
+    valid_stated_nations = ['US','DE','UK','IN','BR']
 
     if state != None and country_code.upper() in valid_stated_nations:
         if len(state + ', ' + country_code) > 25:
