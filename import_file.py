@@ -10,7 +10,6 @@ import logging
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 import history_table
-from display_statistics import overall_build_insert_frame
 data = None
 
 logger = logging.getLogger(__name__)
@@ -38,8 +37,7 @@ def load_file():
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
     history_table.refresh_data()
-    display_statistics.refresh_labels()
-
+    display_statistics.refresh_all_data()
 
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
@@ -92,8 +90,6 @@ def batch_reverse(batch_list):
     
     wait(tasks, return_when = ALL_COMPLETED)
     results = [task.result() for task in tasks]
-
-
 
     return results
 

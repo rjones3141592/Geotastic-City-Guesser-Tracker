@@ -1,5 +1,6 @@
 from matplotlib.figure import Figure
 import numpy as np
+import matplotlib.pyplot as plt
 
 def percent_correct_pie(data):
     right_wrong_labels = ['Correct','Incorrect']
@@ -19,3 +20,6 @@ def percent_correct_pie(data):
     accuracy_figure.legend(loc = 'upper right', labels = right_wrong_labels)
     
     return accuracy_figure, fig
+
+def time_histogram(correct_data, incorrect_data):
+    pass

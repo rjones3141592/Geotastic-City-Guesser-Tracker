@@ -120,7 +120,7 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
     history_table.refresh_data()
-    display_statistics.refresh_labels()
+    display_statistics.refresh_all_data()
 
     
 

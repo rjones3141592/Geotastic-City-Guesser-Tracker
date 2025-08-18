@@ -5,6 +5,7 @@ from tkinter import messagebox as msgbox
 import city_database
 import settings
 import stat_queries
+import display_statistics
 
 # Module level variable set to guess_table; allows Table to be refreshed when needed)
 guess_table = None
@@ -92,7 +93,7 @@ def delete_most_recent():
     else:
         city_database.db_remove_recent()
 
-    
+    display_statistics.refresh_all_data()
     refresh_data()
 
 def delete_selected():
@@ -113,6 +114,7 @@ def delete_selected():
     else:
         city_database.db_delete_selected(getint(id))
 
+    display_statistics.refresh_all_data()
     refresh_data()
 
 
