@@ -13,6 +13,10 @@ This project is currently in progress; as of right now, both manual insertions a
 
 7/29/2025 - Importing of JSON files downloadable after rounds now work! I need to modify the manual insertion to also rely on API calls.
 
+7/31/2025 - Both manual and JSON data insertions now use API calls to standardize data inputs in the SQL database!
+
+8/11/2025 - Overall Stat Overview now added! Will be adding more advanced/deeper statistics down the line.
+
 ## Special Thanks
 
 To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy cow I did NOT expect that.
