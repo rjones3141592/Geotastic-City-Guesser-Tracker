@@ -171,4 +171,85 @@ def most_played_country():
     finally:
         connection.close()
 
+# Gets times for correct and incorrect guesses and returns them for histogram
+def times_for_correct_incorrect():
+    # Empty_case check
+    if city_database.db_is_empty():
+        return [[],[]]
+
+    correct_times = []
+    incorrect_times = []
+
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        # Reads database for both correct_guess = 1 and correct_guess = 0 and extends their respective lists
+        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 1')
+        data = read_all.fetchall()
+
+        correct_times.extend(time[0] for time in data)
+
+        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 0')
+        data = read_all.fetchall()
+
+        incorrect_times.extend(time[0] for time in data)
+
+        return [correct_times, incorrect_times]
     
+    except sqlite3.OperationalError as error_code:
+        print('Failed to read data!', error_code)
+        return None
+
+    finally:
+        connection.close()
+
+# Deduces the average time to guess per round between correct guesses & incorrect guesses
+def average_times_correct_incorrect():
+    connection = sqlite3.connect(STAT_FILE)
+    cursor = connection.cursor()
+
+    # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A','N/A']
+
+    try:
+        # Executes two AVG calls onto the database
+        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 1").fetchall()
+        avg_correct_time = round(output[0][0], 2)
+
+        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 0").fetchall()
+        avg_incorrect_time = round(output[0][0], 2)
+        
+        # Gives both in one line, and can be accessed through list indexing
+        return [str(avg_correct_time) + ' seconds', str(avg_incorrect_time) + ' seconds']
+
+    except sqlite3.OperationalError as error_code:
+        print("Failed to read database! Error Code: ", error_code)
+
+    finally:
+        connection.close()
+
+def fastest_slowest_correct_time():
+    connection = sqlite3.connect(STAT_FILE)
+    cursor = connection.cursor()
+
+    # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A','N/A']
+
+    try:
+        # Finds slowest correct time
+        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 ORDER BY guess_time DESC LIMIT 1").fetchall()
+        slowest_time = f'{output[0][0]}, {output[0][1]} ({output[0][2]} seconds)'
+
+        # Finds fastest correct time
+        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 ORDER BY guess_time LIMIT 1").fetchall()
+        fastest_time = f'{output[0][0]}, {output[0][1]} ({output[0][2]} seconds)'
+
+        return [fastest_time, slowest_time]
+
+    except sqlite3.OperationalError as error_code:
+        print("Failed to read database! Error Code: ", error_code)
+
+    finally:
+        connection.close()

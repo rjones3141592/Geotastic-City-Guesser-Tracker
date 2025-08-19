@@ -49,7 +49,7 @@ def build_insert_frame(mainframe):
     guess_table.heading('time', text = 'Time')
     guess_table.heading('timestamp', text = 'Date/Time')
 
-    guess_table.grid(row = 1, column = 0, columnspan = 2)
+    guess_table.grid(row = 1, column = 0, columnspan = 2, padx = (25,0))
 
     refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data())
     refresh_button.grid(row = 0, column = 1, sticky = 'e', padx = 5, pady = 10)

@@ -49,7 +49,7 @@ def reverse_geocode(lat, lon):
         'lon': lon,
         'apiKey': settings.read_setting('api_key'),
         'format': 'json',
-        'type': 'street'
+        'type': 'amenity'
     }
     try:
         response = requests.get(GEOAPIFY_API_URL, params=params)
