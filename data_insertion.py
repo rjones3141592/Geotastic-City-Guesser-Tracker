@@ -25,7 +25,7 @@ def build_insert_frame(mainframe):
     guessed_city_entry.grid(row = 1, column = 1, sticky = 'ew', padx = 5, pady = 15)
 
     guessed_stc_label = ttk.Label(mainframe, text = 'State/Country:', font = ('Poppins', 11))
-    guessed_stc_label.grid(row = 1, column = 2, padx = 5, pady = 15)
+    guessed_stc_label.grid(row = 1, column = 2, padx = (30,0), pady = 15, )
 
     guessed_state_country = ttk.Entry(mainframe, width = 15)
     guessed_state_country.grid(row = 1, column = 3, sticky = 'ew', padx = 5, pady = 15)
@@ -143,7 +143,7 @@ def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_
     else:
         ans_city_label.grid(row = 3, column = 0, padx = 5, pady = 5, sticky = 'e')
         ans_city_entry.grid(row = 3, column = 1, sticky = 'ew', padx = 5, pady = 15)
-        ans_stc_label.grid(row = 3, column = 2, padx = 5, pady = 5)
+        ans_stc_label.grid(row = 3, column = 2, padx = (30,0), pady = 5)
         ans_stc_entry.grid(row = 3, column = 3, sticky = 'ew', padx = 5, pady = 15)
 
         submit_button.grid_remove()

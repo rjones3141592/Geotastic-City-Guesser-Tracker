@@ -52,13 +52,13 @@ def build_insert_frame(mainframe):
     guess_table.grid(row = 1, column = 0, columnspan = 2, padx = (25,0))
 
     refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data())
-    refresh_button.grid(row = 0, column = 1, sticky = 'e', padx = 5, pady = 10)
+    refresh_button.grid(row = 0, column = 1, sticky = 'e', pady = 10)
 
     delete_recent = ttk.Button(mainframe, text = 'Delete Recent', command = lambda *args: delete_most_recent())
-    delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = 5, pady = 10)
+    delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = (25,0), pady = 10)
 
     del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected())
-    del_selected.grid(row = 2, column = 1, sticky = 'e', padx = 5, pady = 10)
+    del_selected.grid(row = 2, column = 1, sticky = 'e', pady = 10)
 
     refresh_data()
 
@@ -116,6 +116,7 @@ def delete_selected():
 
     display_statistics.refresh_all_data()
     refresh_data()
+    display_statistics.refresh_all_data()
 
 
 

@@ -21,37 +21,37 @@ def build_insert_frame(frame):
     timing_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 5)
     
     average_time_overall_label = ttk.Label(frame, text = 'Average Guess Time: ', font = ('Poppins',12))
-    average_time_overall_label.grid(row = 1, column = 0, sticky = 'ew', padx = 5, pady = 5)
+    average_time_overall_label.grid(row = 1, column = 0, sticky = 'ew', padx = 5)
 
     avg_time_correct_label = ttk.Label(frame, text = 'Average Time - Correct: ', font = ('Poppins',12))
-    avg_time_correct_label.grid(row = 2, column = 0, sticky = 'e', padx = 20, pady = 5)
+    avg_time_correct_label.grid(row = 2, column = 0, sticky = 'e', padx = 20)
 
     avg_time_incorrect_label = ttk.Label(frame, text = 'Average Time - Incorrect: ', font = ('Poppins',12))
-    avg_time_incorrect_label.grid(row = 3, column = 0, sticky = 'e', padx = 20, pady = 5)
+    avg_time_incorrect_label.grid(row = 3, column = 0, sticky = 'e', padx = 20)
 
     fastest_guess_label = ttk.Label(frame, text = 'Fastest correct guess: ', font = ('Poppins',12))
-    fastest_guess_label.grid(row = 4, column = 0, sticky = 'ew', padx = 5, pady = 5)
+    fastest_guess_label.grid(row = 4, column = 0, sticky = 'ew', padx = 5)
 
     slowest_guess_label = ttk.Label(frame, text = 'Slowest correct guess: ', font = ('Poppins',12))
-    slowest_guess_label.grid(row = 5, column = 0, sticky = 'ew', padx = 5, pady = 5)
+    slowest_guess_label.grid(row = 5, column = 0, sticky = 'ew', padx = 5)
 
     value_average_time_label = ttk.Label(frame, text = stat_queries.average_time(), font = ('Poppins',12))
-    value_average_time_label.grid(row = 1, column = 1, sticky = 'w', padx = 5, pady = 5)
+    value_average_time_label.grid(row = 1, column = 1, sticky = 'w', padx = 5)
 
     value_correct_time_label = ttk.Label(frame, text = stat_queries.average_times_correct_incorrect()[0], font = ('Poppins',12))
-    value_correct_time_label.grid(row = 2, column = 1, sticky = 'w', padx = 5, pady = 5)
+    value_correct_time_label.grid(row = 2, column = 1, sticky = 'w', padx = 5)
 
     value_incorrect_time_label = ttk.Label(frame, text = stat_queries.average_times_correct_incorrect()[1], font = ('Poppins',12))
-    value_incorrect_time_label.grid(row = 3, column = 1, sticky = 'w', padx = 5, pady = 5)
+    value_incorrect_time_label.grid(row = 3, column = 1, sticky = 'w', padx = 5)
 
     value_fastest_guess_label = ttk.Label(frame, text = stat_queries.fastest_slowest_correct_time()[0], font = ('Poppins',12))
-    value_fastest_guess_label.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 5)
+    value_fastest_guess_label.grid(row = 4, column = 1, sticky = 'w', padx = 5)
 
     value_slowest_guess_label = ttk.Label(frame, text = stat_queries.fastest_slowest_correct_time()[1], font = ('Poppins',12))
-    value_slowest_guess_label.grid(row = 5, column = 1, sticky = 'w', padx = 5, pady = 5)
+    value_slowest_guess_label.grid(row = 5, column = 1, sticky = 'w', padx = 5)
 
     timing_tab = frame
-
+    print(stat_queries.accuracy_rolling_average())
     refresh_histogram()
 
 # refreshes labels in time stats tab following any database updates
@@ -71,7 +71,6 @@ def refresh_labels():
     value_slowest_guess_label.config(text = slowest_time)
 
     refresh_histogram()
-
 
 def refresh_histogram():
     global timing_tab

@@ -229,6 +229,7 @@ def average_times_correct_incorrect():
     finally:
         connection.close()
 
+# Gets the fastest and slowest time where a correct guess was made
 def fastest_slowest_correct_time():
     connection = sqlite3.connect(STAT_FILE)
     cursor = connection.cursor()
@@ -247,6 +248,37 @@ def fastest_slowest_correct_time():
         fastest_time = f'{output[0][0]}, {output[0][1]} ({output[0][2]} seconds)'
 
         return [fastest_time, slowest_time]
+
+    except sqlite3.OperationalError as error_code:
+        print("Failed to read database! Error Code: ", error_code)
+
+    finally:
+        connection.close()
+
+# Obtains streaks and puts it in a list for histogram.
+def all_streaks():
+    connection = sqlite3.connect(STAT_FILE)
+    cursor = connection.cursor()
+
+    # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A']
+
+    try:
+        streak = 0
+        streaks_list = []
+        # Finds slowest correct time
+        data = cursor.execute("SELECT correct_guess FROM city_stats ORDER BY id").fetchall()
+        for guess in data:
+            # Correct Guess
+            if guess[0] == 1:
+                streak += 1
+            else:
+                streaks_list.append(streak)
+                streak = 0
+        
+
+        return streaks_list
 
     except sqlite3.OperationalError as error_code:
         print("Failed to read database! Error Code: ", error_code)

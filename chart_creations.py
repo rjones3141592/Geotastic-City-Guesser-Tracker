@@ -39,3 +39,6 @@ def time_histogram(data):
     fig.tight_layout()
 
     return timing_histogram, fig
+
+def rolling_average_line(data):
+    line_plot_labels = ['Recent Averages','Overall Average']
