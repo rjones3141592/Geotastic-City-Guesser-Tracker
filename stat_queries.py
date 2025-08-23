@@ -61,7 +61,7 @@ def percent_accuracy():
 
         accuracy = round((correct_count / float(total_count)) * 100, 2)
         
-        return str(accuracy) + '%'
+        return str(accuracy)
 
     except sqlite3.OperationalError as error_code:
         print("Failed to read database! Error Code: ", error_code)
@@ -79,7 +79,7 @@ def average_time():
         return 'N/A'
 
     try:
-        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats").fetchall()
+        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE guess_time IS NOT NULL").fetchall()
         
         avg_time = round(output[0][0], 2)
         
@@ -184,12 +184,12 @@ def times_for_correct_incorrect():
     cursor = connection.cursor()
     try:
         # Reads database for both correct_guess = 1 and correct_guess = 0 and extends their respective lists
-        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 1')
+        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 1 AND guess_time IS NOT NULL')
         data = read_all.fetchall()
 
         correct_times.extend(time[0] for time in data)
 
-        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 0')
+        read_all = cursor.execute('SELECT guess_time FROM city_stats WHERE correct_guess = 0 AND guess_time IS NOT NULL')
         data = read_all.fetchall()
 
         incorrect_times.extend(time[0] for time in data)
@@ -214,10 +214,10 @@ def average_times_correct_incorrect():
 
     try:
         # Executes two AVG calls onto the database
-        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 1").fetchall()
+        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 1 AND guess_time IS NOT NULL").fetchall()
         avg_correct_time = round(output[0][0], 2)
 
-        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 0").fetchall()
+        output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 0 AND guess_time IS NOT NULL").fetchall()
         avg_incorrect_time = round(output[0][0], 2)
         
         # Gives both in one line, and can be accessed through list indexing
@@ -240,11 +240,11 @@ def fastest_slowest_correct_time():
 
     try:
         # Finds slowest correct time
-        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 ORDER BY guess_time DESC LIMIT 1").fetchall()
+        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 AND guess_time IS NOT NULL ORDER BY guess_time DESC LIMIT 1").fetchall()
         slowest_time = f'{output[0][0]}, {output[0][1]} ({output[0][2]} seconds)'
 
         # Finds fastest correct time
-        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 ORDER BY guess_time LIMIT 1").fetchall()
+        output = cursor.execute("SELECT correct_city, correct_state_country, guess_time FROM city_stats WHERE correct_guess = 1 AND guess_time IS NOT NULL ORDER BY guess_time LIMIT 1").fetchall()
         fastest_time = f'{output[0][0]}, {output[0][1]} ({output[0][2]} seconds)'
 
         return [fastest_time, slowest_time]
@@ -268,7 +268,7 @@ def all_streaks():
         streak = 0
         streaks_list = []
         # Finds slowest correct time
-        data = cursor.execute("SELECT correct_guess FROM city_stats ORDER BY id").fetchall()
+        data = cursor.execute("SELECT correct_guess FROM city_stats").fetchall()
         for guess in data:
             # Correct Guess
             if guess[0] == 1:
@@ -276,8 +276,10 @@ def all_streaks():
             else:
                 streaks_list.append(streak)
                 streak = 0
+        if streak != 0:
+            streaks_list.append(streak)
         
-
+        print(streaks_list)
         return streaks_list
 
     except sqlite3.OperationalError as error_code:
@@ -285,3 +287,16 @@ def all_streaks():
 
     finally:
         connection.close()
+
+# Gets accuracy of each round, with a setting to change amount of rounds shown in database
+def rolling_round_accuracy(data):
+    # Gets accuracy of each round by adding one and then dividing
+    round_accuracy = []
+
+    for entry in data:
+        pc_accuracy = round((entry / float(entry + 1)) * 100, 2)
+        round_accuracy.append(pc_accuracy)
+        
+    print (round_accuracy[-10:])
+    return round_accuracy[-10:]
+

@@ -31,7 +31,7 @@ def build_insert_frame(frame):
     country_label = ttk.Label(frame, text = 'Most Played Country: ', font = ('Poppins',12))
     country_label.grid(row = 4, column = 0, sticky = 'ew', padx = 5, pady = 5)
 
-    value_accuracy_label = ttk.Label(frame, text = stat_queries.percent_accuracy(), font = ('Poppins',12))
+    value_accuracy_label = ttk.Label(frame, text = stat_queries.percent_accuracy() + '%', font = ('Poppins',12))
     value_accuracy_label.grid(row = 1, column = 1, sticky = 'w', padx = 5, pady = 5)
 
     value_time_label = ttk.Label(frame, text = stat_queries.average_time(), font = ('Poppins',12))
@@ -51,7 +51,7 @@ def build_insert_frame(frame):
 def refresh_labels():
     global value_accuracy_label, value_time_label, value_streak_label, value_country_label
 
-    accuracy_value = stat_queries.percent_accuracy()
+    accuracy_value = stat_queries.percent_accuracy() + '%'
     avg_time = stat_queries.average_time()
     longest_streak = stat_queries.longest_streak()
     most_played = stat_queries.most_played_country()

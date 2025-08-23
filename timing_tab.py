@@ -51,7 +51,6 @@ def build_insert_frame(frame):
     value_slowest_guess_label.grid(row = 5, column = 1, sticky = 'w', padx = 5)
 
     timing_tab = frame
-    print(stat_queries.accuracy_rolling_average())
     refresh_histogram()
 
 # refreshes labels in time stats tab following any database updates

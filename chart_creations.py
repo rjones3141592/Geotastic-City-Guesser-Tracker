@@ -1,5 +1,6 @@
 from matplotlib.figure import Figure
 import numpy as np
+import stat_queries
 
 def percent_correct_pie(data):
     right_wrong_labels = ['Correct','Incorrect']
@@ -41,4 +42,28 @@ def time_histogram(data):
     return timing_histogram, fig
 
 def rolling_average_line(data):
-    line_plot_labels = ['Recent Averages','Overall Average']
+    line_plot_labels = ['Recent AVG','Overall AVG']
+    # Recent Average, Overall Average
+
+    fig = Figure(figsize = (4,3))
+    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
+    rolling_line_plot = fig.add_subplot(111)
+    rolling_line_plot.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    # Rolling averages
+    rolling_line_plot.plot(data, color = "#6699DB")
+
+    rolling_line_plot.axhline(stat_queries.percent_accuracy(), color = "#E5AC6B")
+
+    rolling_line_plot.legend(loc = 'upper right', labels = line_plot_labels)
+    rolling_line_plot.set_title('Rolling Accuracy')
+    rolling_line_plot.set_xlabel('Round #')
+    rolling_line_plot.set_ylabel('Accuracy (%)')
+    
+    rolling_line_plot.set_ybound(0, 100)
+    rolling_line_plot.set_yticks(range(0, 101, 10))
+    rolling_line_plot.set_xlim(1, len(data))
+
+    fig.tight_layout()
+    
+    return rolling_line_plot, fig

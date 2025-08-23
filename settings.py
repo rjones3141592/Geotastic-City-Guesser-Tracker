@@ -6,7 +6,7 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', '')"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', ''), ('rolling_number', 10)"""
 
 def build_settings_frame(mainframe):
     header_label = ttk.Label(mainframe, text = "Settings:", font = ('Poppins',16))
