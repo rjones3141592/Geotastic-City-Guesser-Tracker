@@ -53,17 +53,43 @@ def rolling_average_line(data):
     # Rolling averages
     rolling_line_plot.plot(data, color = "#6699DB")
 
-    rolling_line_plot.axhline(stat_queries.percent_accuracy(), color = "#E5AC6B")
-
-    rolling_line_plot.legend(loc = 'upper right', labels = line_plot_labels)
-    rolling_line_plot.set_title('Rolling Accuracy')
-    rolling_line_plot.set_xlabel('Round #')
+    # Overall average as an axis oline
+    rolling_line_plot.axhline(float(stat_queries.percent_accuracy()), color = "#E5AC6B", ls = '--')
+    
+    # Setting labels and legend
+    rolling_line_plot.legend(loc = 'best', labels = line_plot_labels)
+    rolling_line_plot.set_title('Rolling Accuracy - Past 10 Rounds')
+    rolling_line_plot.set_xlabel('Recent Round #')
     rolling_line_plot.set_ylabel('Accuracy (%)')
     
-    rolling_line_plot.set_ybound(0, 100)
+    # Setting boundaries of chart with reverse x tick label
+    rolling_line_plot.set_ylim(0, 100)
     rolling_line_plot.set_yticks(range(0, 101, 10))
-    rolling_line_plot.set_xlim(1, len(data))
+    rolling_line_plot.set_xlim(0, len(data)-1)
+    rolling_line_plot.set_xticks(range(0, 10))
+    rolling_line_plot.set_xticklabels([10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
 
     fig.tight_layout()
     
     return rolling_line_plot, fig
+
+def streaks_histogram(data):
+    # Configuring figure visuals
+    fig = Figure(figsize = (4,3))
+    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
+    streak_histogram = fig.add_subplot(111)
+    streak_histogram.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+
+    # Setting bins to be from 0 to max(data) + 2 to ensure even spacing (and integer evaluations of streak distribution)
+    streak_histogram.hist(data, bins = range(0, max(data) + 2), align = 'left', rwidth = 0.9, color = '#6699DB')
+
+    streak_histogram.set_title('Streaks Distribution')
+    streak_histogram.set_xlabel('Streak Amount')
+    streak_histogram.set_ylabel('Frequency')
+
+    streak_histogram.set_xticks(range(0, max(data) + 1))
+
+    fig.tight_layout()
+
+    return streak_histogram, fig

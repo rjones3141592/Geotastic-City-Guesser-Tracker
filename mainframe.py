@@ -49,7 +49,7 @@ settings.build_settings_frame(settings_tab)
 # Modifying tab styling for design purposes
 tab_style = ttk.Style()
 tab_style.configure('TNotebook.Tab', font = ('Roboto',12))
-tab_style.configure('TNotebook.Tab', padding=5)
+tab_style.configure('TNotebook.Tab', padding = 5)
 
 tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
 

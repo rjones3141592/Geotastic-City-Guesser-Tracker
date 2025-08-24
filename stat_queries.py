@@ -278,8 +278,7 @@ def all_streaks():
                 streak = 0
         if streak != 0:
             streaks_list.append(streak)
-        
-        print(streaks_list)
+
         return streaks_list
 
     except sqlite3.OperationalError as error_code:
@@ -289,14 +288,24 @@ def all_streaks():
         connection.close()
 
 # Gets accuracy of each round, with a setting to change amount of rounds shown in database
-def rolling_round_accuracy(data):
+def rolling_round_accuracy():
     # Gets accuracy of each round by adding one and then dividing
+    data = all_streaks()
+
     round_accuracy = []
 
     for entry in data:
         pc_accuracy = round((entry / float(entry + 1)) * 100, 2)
         round_accuracy.append(pc_accuracy)
         
-    print (round_accuracy[-10:])
     return round_accuracy[-10:]
 
+# Gets average streak
+def average_streaks():
+    data = all_streaks()
+
+    data_sum = sum(data)
+
+    average = data_sum / len(data)
+
+    return round(average, 2)
