@@ -17,6 +17,8 @@ This project is currently in progress; as of right now, both manual insertions a
 
 8/11/2025 - Overall Stat Overview now added! Will be adding more advanced/deeper statistics down the line.
 
+8/24/2025 - Back in University so progress will be slowed; Timing tab + Accuracy * Streaks tab are both online!
+
 ## Special Thanks
 
 To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy cow I did NOT expect that.
