@@ -17,7 +17,7 @@ def build_insert_frame(frame):
     aas_sub_header = ttk.Label(frame, text = "Accuracy & Streaks", font = ('Poppins',16))
     aas_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 5)
 
-    overall_accuracy_label = ttk.Label(frame, text = 'Current Accuracy: ', font = ('Poppins',12))
+    overall_accuracy_label = ttk.Label(frame, text = 'Overall Accuracy: ', font = ('Poppins',12))
     overall_accuracy_label.grid(row = 1, column = 0, sticky = 'ew', padx = 5)
 
     value_accuracy_label = ttk.Label(frame, text = stat_queries.percent_accuracy() + '%', font = ('Poppins',12))
