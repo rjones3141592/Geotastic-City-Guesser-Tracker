@@ -1,6 +1,8 @@
 from matplotlib.figure import Figure
 import numpy as np
 import stat_queries
+from matplotlib.ticker import MaxNLocator
+
 
 def percent_correct_pie(data):
     right_wrong_labels = ['Correct','Incorrect']
@@ -30,7 +32,7 @@ def time_histogram(data):
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     timing_histogram = fig.add_subplot(111)
     timing_histogram.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
-    timing_histogram.hist(data, bins = 30, stacked = True, color = ['#8AEA95', '#E5716B'])
+    timing_histogram.hist(data, bins = 30, stacked = True, rwidth = 0.9, color = ['#8AEA95', '#E5716B'])
 
     timing_histogram.legend(loc = 'upper right', labels = histogram_labels)
     timing_histogram.set_title('Timing Distribution')
@@ -88,7 +90,7 @@ def streaks_histogram(data):
     streak_histogram.set_xlabel('Streak Amount')
     streak_histogram.set_ylabel('Frequency')
 
-    streak_histogram.set_xticks(range(0, max(data) + 1))
+    streak_histogram.xaxis.set_major_locator(MaxNLocator(integer = True))
 
     fig.tight_layout()
 

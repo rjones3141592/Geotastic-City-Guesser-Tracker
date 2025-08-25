@@ -38,28 +38,26 @@ def read_for_db_input_auto(json_file, json_api):
 
     round_length = len(file_data) # To be used for accessing the incorrect city guess
 
-    # Values that will be put into db_add
-    guessed_city = None
-    guessed_stc = None
-    score = 1
-    target_city = None
-    target_stc = None
-    guess_time = None
-
     # values that will be used to determine values that will be inputted into it
 
-    print(round_length)
-
     for i in range(round_length):
+        # Values that will be put into db_add
+        guessed_city = None
+        guessed_stc = None
+        score = 1
+        target_city = None
+        target_stc = None
+        guess_time = None
 
-        guessed_city = json_api[i]['city']
+        if 'city' in json_api[i]:
+            guessed_city = json_api[i]['city']
+
         # Might be changed later if it reaches the incorrect value
         target_city = guessed_city
 
         guessed_stc = abbreviation_decision(json_api[i])
 
         target_stc = guessed_stc
-
         
         if (file_data[i]['score'] == 0):
             score = 0

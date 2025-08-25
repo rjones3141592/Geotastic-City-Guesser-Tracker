@@ -65,6 +65,12 @@ def db_is_empty():
 # Function to add city
 def db_add(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_time = None):
 
+    if city_guess == None:
+        city_guess = 'Unknown City'
+    
+    if stc_guess == None:
+        stc_guess = 'Unknown'
+    
     connection = sqlite3.connect("GT_stat_file.db")
     cursor = connection.cursor()
     try:
@@ -81,7 +87,8 @@ def db_remove_recent():
     cursor = connection.cursor()
     try:
 
-        most_recent_id = cursor.execute("SELECT id FROM city_stats ORDER BY timestamp DESC LIMIT 1").fetchone()
+        most_recent_id = cursor.execute("SELECT id FROM city_stats ORDER BY id DESC LIMIT 1").fetchone()
+        print((most_recent_id[0],))
         cursor.execute("DELETE FROM city_stats WHERE id = ?", (most_recent_id[0],))
         connection.commit()
     except sqlite3.OperationalError as error_code:

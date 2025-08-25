@@ -7,7 +7,7 @@ import timing_tab
 import accuracy_streaks_tab
 
 
-# Module level variables to allow refreshing of statistical data on the city tab
+# Python file that congregates separate python tab files into one central file
 
 def build_insert_frame(mainframe):
 
@@ -30,4 +30,5 @@ def build_insert_frame(mainframe):
 def refresh_all_data():
     overall_tab.refresh_labels()
     timing_tab.refresh_labels()
+    accuracy_streaks_tab.refresh_labels()
 
