@@ -309,3 +309,22 @@ def average_streaks():
     average = data_sum / len(data)
 
     return round(average, 2)
+
+# Gets top 5 round
+def most_correct_cities():
+    connection = sqlite3.connect(STAT_FILE)
+    cursor = connection.cursor()
+
+    # Empty_case check
+    if city_database.db_is_empty():
+        return 'N/A'
+
+    try:
+        output = cursor.execute("SELECT AVG(correct_guess), SUM(correct_guess), COUNT(*), correct_city, correct_state_country FROM city_stats GROUP BY correct_city, correct_state_country ORDER BY AVG(correct_guess) DESC, COUNT(*) DESC, SUM(correct_guess) DESC").fetchall()
+        print(output)
+
+    except sqlite3.OperationalError as error_code:
+        print("Failed to read database! Error Code: ", error_code)
+
+    finally:
+        connection.close()
