@@ -34,10 +34,12 @@ def time_histogram(data):
     timing_histogram.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
     timing_histogram.hist(data, bins = 30, stacked = True, rwidth = 0.9, color = ['#8AEA95', '#E5716B'])
 
-    timing_histogram.legend(loc = 'upper right', labels = histogram_labels)
+    timing_histogram.legend(loc = 'best', labels = histogram_labels)
     timing_histogram.set_title('Timing Distribution')
     timing_histogram.set_xlabel('Time (s)')
     timing_histogram.set_ylabel('Frequency')
+
+    timing_histogram.yaxis.set_major_locator(MaxNLocator(integer = True))
 
     fig.tight_layout()
 
@@ -91,6 +93,7 @@ def streaks_histogram(data):
     streak_histogram.set_ylabel('Frequency')
 
     streak_histogram.xaxis.set_major_locator(MaxNLocator(integer = True))
+    streak_histogram.yaxis.set_major_locator(MaxNLocator(integer = True))
 
     fig.tight_layout()
 

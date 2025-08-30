@@ -106,7 +106,8 @@ def delete_selected():
     # Grabbing unique ID identifier for SQL usage purposes
     selection_values = guess_table.item(selection)
     id = selection_values['values'][0]
-
+    print(id)
+    
     if (settings.read_setting('confirm_delete')):
         if msgbox.askokcancel("Confirm Delete", "Are you sure you want to delete the selected entry?"):
             city_database.db_delete_selected(getint(id))

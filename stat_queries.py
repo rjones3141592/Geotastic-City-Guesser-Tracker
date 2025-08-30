@@ -320,7 +320,7 @@ def most_correct_cities():
         return 'N/A'
 
     try:
-        output = cursor.execute("SELECT AVG(correct_guess), SUM(correct_guess), COUNT(*), correct_city, correct_state_country FROM city_stats GROUP BY correct_city, correct_state_country ORDER BY AVG(correct_guess) DESC, COUNT(*) DESC, SUM(correct_guess) DESC").fetchall()
+        output = cursor.execute("SELECT AVG(correct_guess), SUM(correct_guess), COUNT(*), correct_city, correct_state_country FROM city_stats GROUP BY correct_city, correct_state_country ORDER BY SUM(correct_guess) DESC, AVG(correct_guess) DESC, COUNT(*) DESC").fetchall()
         print(output)
 
     except sqlite3.OperationalError as error_code:
