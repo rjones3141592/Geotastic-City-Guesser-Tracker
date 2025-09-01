@@ -14,3 +14,4 @@ def build_insert_frame(frame):
     overall_accuracy_label.grid(row = 1, column = 0, sticky = 'ew', padx = 5)
 
     stat_queries.most_correct_cities()
+    stat_queries.most_incorrect_cities()
