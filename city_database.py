@@ -139,7 +139,6 @@ def get_display_data():
     finally:
         connection.close()
 
-
 def db_delete_selected(id):
     connection = sqlite3.connect("GT_stat_file.db")
     cursor = connection.cursor()
@@ -152,6 +151,18 @@ def db_delete_selected(id):
         print("Failed to remove most recent data!", error_code)
     finally: 
         connection.close()
+
+def db_edit_cities(id, guessed_city, target_city):
+    connection = sqlite3.connect("GT_stat_file.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute("UPDATE city_stats SET guessed_city = ?, correct_city = ? WHERE id = ?", (guessed_city, target_city, id)).fetchone()
+        connection.commit()
+    except sqlite3.OperationalError as error_code:
+        print("Failed to edit data!", error_code)
+    finally: 
+        connection.close()
+
 
 def db_close():
     global connection

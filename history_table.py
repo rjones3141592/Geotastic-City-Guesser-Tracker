@@ -60,6 +60,8 @@ def build_insert_frame(mainframe):
     del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected())
     del_selected.grid(row = 2, column = 1, sticky = 'e', pady = 10)
 
+    guess_table.bind('<Double-1>', lambda event: onDoubleClick(event))
+
     refresh_data()
 
 def refresh_data():
@@ -93,8 +95,9 @@ def delete_most_recent():
     else:
         city_database.db_remove_recent()
 
-    display_statistics.refresh_all_data()
     refresh_data()
+    display_statistics.refresh_all_data()
+
 
 def delete_selected():
     selection = guess_table.focus()
@@ -107,7 +110,7 @@ def delete_selected():
     selection_values = guess_table.item(selection)
     id = selection_values['values'][0]
     print(id)
-    
+
     if (settings.read_setting('confirm_delete')):
         if msgbox.askokcancel("Confirm Delete", "Are you sure you want to delete the selected entry?"):
             city_database.db_delete_selected(getint(id))
@@ -115,12 +118,73 @@ def delete_selected():
     else:
         city_database.db_delete_selected(getint(id))
 
-    display_statistics.refresh_all_data()
     refresh_data()
     display_statistics.refresh_all_data()
 
+# Defining onDoubleClick for usage in editing treeview table (and sql database too)
+def onDoubleClick(event):
+    # Grabbing row to focus; checking if one exists
+    selection = guess_table.focus()
+
+    if (selection == ''):
+        msgbox.showerror(title = 'Missing Parameters', message = 'You must select an entry in order to edit!')
+        return
+
+    popup = tk.Toplevel()
+    popup.title('Update Values')
+
+    selection_values = guess_table.item(selection)['values']
+    id = selection_values[0]
+
+    print(id, selection_values)
+
+    current_guessed_city_label = ttk.Label(popup, text = 'Current Guessed City: ', font = ('Poppins',10))
+    current_guessed_city_label.grid(row = 0, column = 0, sticky = 'w', pady = 5)
+
+    value_current_guessed_city_label = ttk.Label(popup, text = selection_values[1] + ', ' + selection_values[2], font = ('Poppins',10))
+    value_current_guessed_city_label.grid(row = 0, column = 1, sticky = 'w', pady = 5)
+
+    current_target_city_label = ttk.Label(popup, text = 'Current Target City: ', font = ('Poppins',10))
+    current_target_city_label.grid(row = 1, column = 0, sticky = 'w', pady = 5)
+
+    value_current_target_city_label = ttk.Label(popup, text = selection_values[4] + ', ' + selection_values[5], font = ('Poppins',10))
+    value_current_target_city_label.grid(row = 1, column = 1, sticky = 'w', pady = 5)
+
+    blank_slate_label = ttk.Label(popup, font = ('Poppins',10))
+    blank_slate_label.grid(row = 2, column = 0, sticky = 'ew')
+
+    update_guessed_label = ttk.Label(popup, text = 'Update Guessed City: ', font = ('Poppins',10))
+    update_guessed_label.grid(row = 3, column = 0, sticky = 'w', pady = 5)
+
+    update_guessed_entry = ttk.Entry(popup, width = 40)
+    update_guessed_entry.grid(row = 3, column = 1, sticky = 'ew', pady = 5)
+
+    update_target_label = ttk.Label(popup, text = 'Update Target City: ', font = ('Poppins',10))
+    
+    update_target_entry = ttk.Entry(popup, width = 40)
+
+    submit_button = ttk.Button(popup, text = 'Update Selected City', command = lambda *args: edit_values(popup, selection_values[0],update_guessed_entry.get(), update_target_entry.get()))
+    
+    if (selection_values[3] == 'No'):
+        update_target_label.grid(row = 4, column = 0, sticky = 'w', pady = 5)
+        update_target_entry.grid(row = 4, column = 1, sticky = 'ew', pady = 5)
+
+        submit_button.grid(row = 5, column = 1, sticky = 'n', pady = 5)
+
+    else:
+        update_guessed_label.config(text = 'Update Target City: ')
+        submit_button.grid(row = 4, column = 1, sticky = 'n', pady = 5)
 
 
 
+def edit_values(root, id, guessed_city, target_city = ''):
+    if (target_city == ''):
+        target_city = guessed_city
+    
+    city_database.db_edit_cities(id, guessed_city, target_city)
 
+    root.destroy()
+
+    refresh_data()
+    display_statistics.refresh_all_data()
     
