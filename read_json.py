@@ -68,13 +68,19 @@ def read_for_db_input_auto(json_file, json_api):
 
         guess_time = file_data[i]['time']
 
+        # Checking if a city is snobbish and has a 'City of' in the front, and peasantizing it to be consistent with everyone else
+        if target_city.startswith('City of '):
+            target_city = target_city.replace('City of ', '')
+
+        if guessed_city.startswith('City of '):
+            guessed_city = guessed_city.replace('City of ', '')
+
         city_database.db_add(guessed_city, guessed_stc, score, target_city, target_stc, guess_time)
 
 # Since only at most two JSON files will be added separately, manual will be a bit simpler
 def read_for_db_input_manual(guessed_api, correct, target_api = None, time = None):
     # Getting JSON from the api calls
     guessed_json = guessed_api['results'][0]
-
 
     guessed_city = guessed_json['city']
     guessed_stc = abbreviation_decision(guessed_json)
@@ -91,6 +97,12 @@ def read_for_db_input_manual(guessed_api, correct, target_api = None, time = Non
         target_city = target_json['city']
         target_stc = abbreviation_decision(target_json)
 
+    # Plebian cities are more common; 'City of ' cities will be getting their fronts cut off.
+    if target_city.startswith('City of '):
+        target_city = target_city.replace('City of ', '')
+
+    if guessed_city.startswith('City of '):
+        guessed_city = guessed_city.replace('City of ', '')
 
     city_database.db_add(guessed_city, guessed_stc, score, target_city, target_stc, guess_time)
 

@@ -163,7 +163,7 @@ def onDoubleClick(event):
     
     update_target_entry = ttk.Entry(popup, width = 40)
 
-    submit_button = ttk.Button(popup, text = 'Update Selected City', command = lambda *args: edit_values(popup, selection_values[0],update_guessed_entry.get(), update_target_entry.get()))
+    submit_button = ttk.Button(popup, text = 'Update Selected City', command = lambda *args: edit_values(popup, selection_values[0], selection_values[1], selection_values[4], selection_values[3], update_guessed_entry.get(), update_target_entry.get()))
     
     if (selection_values[3] == 'No'):
         update_target_label.grid(row = 4, column = 0, sticky = 'w', pady = 5)
@@ -177,11 +177,29 @@ def onDoubleClick(event):
 
 
 
-def edit_values(root, id, guessed_city, target_city = ''):
-    if (target_city == ''):
-        target_city = guessed_city
+def edit_values(root, id, original_guessed, original_target, was_correct, guessed_city, target_city = ''):
+    input_target = target_city
+    input_guessed = guessed_city
+
+    if (was_correct == 'Yes'):
+        print('change')
+        if guessed_city == '':
+            input_guessed = original_guessed
+
+        input_target = input_guessed
     
-    city_database.db_edit_cities(id, guessed_city, target_city)
+    elif was_correct == 'No':
+        if input_guessed == '':
+            input_guessed = original_guessed
+        
+        if input_target == '':
+            input_target = original_target
+    else:
+        print('error!')
+    
+    print(input_target)
+
+    city_database.db_edit_cities(id, input_guessed, input_target)
 
     root.destroy()
 
