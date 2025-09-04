@@ -115,6 +115,8 @@ def db_read_all():
 def get_display_data():
     connection = sqlite3.connect("GT_stat_file.db")
     cursor = connection.cursor()
+
+    edge_case_exists = False
     try:
         read_all = cursor.execute('SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY id DESC')
         data = read_all.fetchall()
@@ -127,10 +129,17 @@ def get_display_data():
                 row_list[3] = 'Yes'
             else:
                 row_list[3] = 'No'
+
+                # Adding '*' to indicate edge case in guessing
+                if row_list[1] == row_list[4]:
+                    row_list[4] = row_list[4] + '*'
+                    edge_case_exists = True
+                
             row = tuple(row_list)
 
+            
             display_data.append(row)
-        return display_data
+        return display_data, edge_case_exists
     
     except sqlite3.OperationalError as error_code:
         print('Failed to read data!', error_code)

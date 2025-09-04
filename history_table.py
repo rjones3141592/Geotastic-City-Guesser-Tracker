@@ -9,11 +9,14 @@ import display_statistics
 
 # Module level variable set to guess_table; allows Table to be refreshed when needed)
 guess_table = None
+edge_case_label = None
 
 def build_insert_frame(mainframe):
+    global edge_case_label
     tab_sub_header = ttk.Label(mainframe, text = "Guess History", font = ('Poppins',16))
     tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 10)
 
+    edge_case_label = ttk.Label(mainframe, text = '* Same city guessed, but not close enough (outside radius)', font = ('Poppins', 8,'italic'))
     global guess_table
     guess_table = ttk.Treeview(mainframe)
 
@@ -65,13 +68,20 @@ def build_insert_frame(mainframe):
     refresh_data()
 
 def refresh_data():
+    global edge_case_label
+
     # Check if file exists
     if (city_database.db_exists() == False):
         return
     
     guess_table.delete(*guess_table.get_children())
 
-    data = city_database.get_display_data()
+    data = city_database.get_display_data()[0]
+
+    edge_case = city_database.get_display_data()[1]
+    
+    if (edge_case):
+        edge_case_label.grid(row = 3, column = 0, sticky = 'w', padx = (25,0), pady = 2)
 
     # Check if file has a table at all
     if (data == None):

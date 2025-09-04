@@ -36,19 +36,19 @@ def build_insert_frame(frame):
     slowest_guess_label.grid(row = 5, column = 0, sticky = 'ew', padx = 5)
 
     value_average_time_label = ttk.Label(frame, text = stat_queries.average_time(), font = ('Poppins',12))
-    value_average_time_label.grid(row = 1, column = 1, sticky = 'w', padx = 5)
+    value_average_time_label.grid(row = 1, column = 1, sticky = 'w')
 
     value_correct_time_label = ttk.Label(frame, text = stat_queries.average_times_correct_incorrect()[0], font = ('Poppins',12))
-    value_correct_time_label.grid(row = 2, column = 1, sticky = 'w', padx = 5)
+    value_correct_time_label.grid(row = 2, column = 1, sticky = 'w')
 
     value_incorrect_time_label = ttk.Label(frame, text = stat_queries.average_times_correct_incorrect()[1], font = ('Poppins',12))
-    value_incorrect_time_label.grid(row = 3, column = 1, sticky = 'w', padx = 5)
+    value_incorrect_time_label.grid(row = 3, column = 1, sticky = 'w')
 
     value_fastest_guess_label = ttk.Label(frame, text = stat_queries.fastest_slowest_correct_time()[0], font = ('Poppins',12))
-    value_fastest_guess_label.grid(row = 4, column = 1, sticky = 'w', padx = 5)
+    value_fastest_guess_label.grid(row = 4, column = 1, sticky = 'w')
 
     value_slowest_guess_label = ttk.Label(frame, text = stat_queries.fastest_slowest_correct_time()[1], font = ('Poppins',12))
-    value_slowest_guess_label.grid(row = 5, column = 1, sticky = 'w', padx = 5)
+    value_slowest_guess_label.grid(row = 5, column = 1, sticky = 'w')
 
     timing_tab = frame
     refresh_histogram()
