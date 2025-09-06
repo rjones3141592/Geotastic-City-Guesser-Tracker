@@ -16,7 +16,7 @@ order_values = ['ID (newest)', 'ID (oldest)', 'Guess (A -> Z)', 'Guess (Z -> A)'
 order_parameters = {'ID (newest)': ('id', 'DESC'), 'ID (oldest)': ('id', 'ASC'), 'Guess (A -> Z)': ('guessed_city', 'ASC'), 'Guess (Z -> A)': ('guessed_city', 'DESC'), 'Correct (Yes First)': ('correct_guess', 'DESC'), 'Correct (No First)': ('correct_guess', 'ASC'), 'Target (A -> Z)': ('correct_city', 'ASC'), 'Target (Z -> A)': ('correct_city', 'DESC'), 'Time (Fastest)': ('guess_time', 'ASC'), 'Time (Slowest)': ('guess_time', 'DESC')}
 
 def build_insert_frame(mainframe):
-    global edge_case_label
+    global edge_case_label, order_combobox
     tab_sub_header = ttk.Label(mainframe, text = "Guess History", font = ('Poppins',16))
     tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = (0,5))
 
@@ -114,7 +114,7 @@ def delete_most_recent():
     else:
         city_database.db_remove_recent()
 
-    refresh_data()
+    refresh_data(order_parameters[order_combobox.get()][0], order_parameters[order_combobox.get()][1])
     display_statistics.refresh_all_data()
 
 
@@ -128,7 +128,6 @@ def delete_selected():
     # Grabbing unique ID identifier for SQL usage purposes
     selection_values = guess_table.item(selection)
     id = selection_values['values'][0]
-    print(id)
 
     if (settings.read_setting('confirm_delete')):
         if msgbox.askokcancel("Confirm Delete", "Are you sure you want to delete the selected entry?"):
@@ -137,7 +136,7 @@ def delete_selected():
     else:
         city_database.db_delete_selected(getint(id))
 
-    refresh_data()
+    refresh_data(order_parameters[order_combobox.get()][0], order_parameters[order_combobox.get()][1])
     display_statistics.refresh_all_data()
 
 # Defining onDoubleClick for usage in editing treeview table (and sql database too)
@@ -153,9 +152,6 @@ def onDoubleClick(event):
     popup.title('Update Values')
 
     selection_values = guess_table.item(selection)['values']
-    id = selection_values[0]
-
-    print(id, selection_values)
 
     current_guessed_city_label = ttk.Label(popup, text = 'Current Guessed City: ', font = ('Poppins',10))
     current_guessed_city_label.grid(row = 0, column = 0, sticky = 'w', pady = 5)
@@ -222,6 +218,6 @@ def edit_values(root, id, original_guessed, original_target, was_correct, guesse
 
     root.destroy()
 
-    refresh_data()
+    refresh_data(order_parameters[order_combobox.get()][0], order_parameters[order_combobox.get()][1])
     display_statistics.refresh_all_data()
     
