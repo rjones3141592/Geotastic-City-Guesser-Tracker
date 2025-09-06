@@ -35,4 +35,5 @@ def refresh_all_data():
     overall_tab.refresh_labels()
     timing_tab.refresh_labels()
     accuracy_streaks_tab.refresh_labels()
+    city_statistics_tab.refresh_lists()
 

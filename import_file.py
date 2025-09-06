@@ -36,7 +36,7 @@ def load_file():
 
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
-    history_table.refresh_data()
+    history_table.refresh_data(history_table.order_parameters[history_table.order_combobox.get()][0], history_table.order_parameters[history_table.order_combobox.get()][1])
     display_statistics.refresh_all_data()
 
 # This function is adapted from Geoapify's MIT-licensed sample code

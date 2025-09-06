@@ -12,6 +12,7 @@ value_avg_streak_label = None
 value_longest_streak_label = None
 
 def build_insert_frame(frame):
+    frame.grid_columnconfigure(2, weight = 2)
     global aas_tab, value_accuracy_label, value_avg_streak_label, value_longest_streak_label
     #aas -> accuracy and streaks
     aas_sub_header = ttk.Label(frame, text = "Accuracy & Streaks", font = ('Poppins',16))

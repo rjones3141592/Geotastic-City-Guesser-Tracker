@@ -15,6 +15,7 @@ value_fastest_guess_label = None
 value_slowest_guess_label = None
 
 def build_insert_frame(frame):
+    frame.grid_columnconfigure(2, weight = 2)
     global timing_tab, value_average_time_label, value_correct_time_label, value_incorrect_time_label, value_fastest_guess_label, value_slowest_guess_label
 
     timing_sub_header = ttk.Label(frame, text = "Time Stats", font = ('Poppins',16))

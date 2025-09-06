@@ -14,6 +14,7 @@ value_streak_label = None
 value_country_label = None
 
 def build_insert_frame(frame):
+    frame.grid_columnconfigure(2, weight = 2)
     global value_accuracy_label, value_country_label, value_streak_label, value_time_label, overall_tab
 
     overall_sub_header = ttk.Label(frame, text = "Stats Overview", font = ('Poppins',16))
@@ -75,4 +76,4 @@ def refresh_pie_chart():
 
     accuracy_chart = FigureCanvasTkAgg(fig, overall_tab)
 
-    accuracy_chart.get_tk_widget().grid(row = 0, column = 2, padx = (240,0), pady = 0, rowspan = 6, sticky = 'e')
+    accuracy_chart.get_tk_widget().grid(row = 0, column = 2, pady = 0, rowspan = 6, sticky = 'e')

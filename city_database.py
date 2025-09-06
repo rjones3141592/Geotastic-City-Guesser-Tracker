@@ -112,13 +112,16 @@ def db_read_all():
     finally:
         connection.close()
 
-def get_display_data():
+def get_display_data(order = 'id', direction = 'DESC'):
     connection = sqlite3.connect("GT_stat_file.db")
     cursor = connection.cursor()
 
     edge_case_exists = False
     try:
-        read_all = cursor.execute('SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY id DESC')
+        if (order != 'correct_guess'):
+            read_all = cursor.execute(f'SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY {order} {direction}')
+        else:
+            read_all = cursor.execute(f'SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY {order} {direction}, correct_city')
         data = read_all.fetchall()
 
         display_data = []

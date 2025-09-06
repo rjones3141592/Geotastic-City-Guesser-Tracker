@@ -11,10 +11,14 @@ import display_statistics
 guess_table = None
 edge_case_label = None
 
+order_combobox = None
+order_values = ['ID (newest)', 'ID (oldest)', 'Guess (A -> Z)', 'Guess (Z -> A)', 'Correct (Yes First)', 'Correct (No First)', 'Target (A -> Z)', 'Target (Z -> A)', 'Time (Fastest)', 'Time (Slowest)']
+order_parameters = {'ID (newest)': ('id', 'DESC'), 'ID (oldest)': ('id', 'ASC'), 'Guess (A -> Z)': ('guessed_city', 'ASC'), 'Guess (Z -> A)': ('guessed_city', 'DESC'), 'Correct (Yes First)': ('correct_guess', 'DESC'), 'Correct (No First)': ('correct_guess', 'ASC'), 'Target (A -> Z)': ('correct_city', 'ASC'), 'Target (Z -> A)': ('correct_city', 'DESC'), 'Time (Fastest)': ('guess_time', 'ASC'), 'Time (Slowest)': ('guess_time', 'DESC')}
+
 def build_insert_frame(mainframe):
     global edge_case_label
     tab_sub_header = ttk.Label(mainframe, text = "Guess History", font = ('Poppins',16))
-    tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 10)
+    tab_sub_header.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = (0,5))
 
     edge_case_label = ttk.Label(mainframe, text = '* Same city guessed, but not close enough (outside radius)', font = ('Poppins', 8,'italic'))
     global guess_table
@@ -28,7 +32,7 @@ def build_insert_frame(mainframe):
     guess_table.tag_configure('oddrow', background = "#E6FAFF")
     guess_table.tag_configure('evenrow', background = "#FFFFFF")
     scrollbar = ttk.Scrollbar(mainframe, orient = 'vertical', command = guess_table.yview)
-    scrollbar.grid(row = 1, column = 2, sticky = 'ns')
+    scrollbar.grid(row = 2, column = 2, sticky = 'ns')
 
     guess_table.configure(yscrollcommand = scrollbar.set)
 
@@ -52,22 +56,28 @@ def build_insert_frame(mainframe):
     guess_table.heading('time', text = 'Time')
     guess_table.heading('timestamp', text = 'Date/Time')
 
-    guess_table.grid(row = 1, column = 0, columnspan = 2, padx = (25,0))
+    order_combobox = ttk.Combobox(mainframe, value = order_values, state = 'readonly')
+    order_combobox.current(0)
+    order_combobox.grid(row = 1, column = 0, sticky = 'w', pady = (0,10), padx = (25,0))
 
-    refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data())
-    refresh_button.grid(row = 0, column = 1, sticky = 'e', pady = 10)
+    order_combobox.bind('<<ComboboxSelected>>', lambda x: refresh_data(order_parameters[order_combobox.get()][0], order_parameters[order_combobox.get()][1]))
+
+    guess_table.grid(row = 2, column = 0, columnspan = 2, padx = (25,0))
+
+    refresh_button = ttk.Button(mainframe, text = 'Refresh', command = lambda *args: refresh_data(order_parameters[order_combobox.get()][0], order_parameters[order_combobox.get()][1]))
+    refresh_button.grid(row = 1, column = 1, sticky = 'e', padx = (25,0), pady = (0,10))
 
     delete_recent = ttk.Button(mainframe, text = 'Delete Recent', command = lambda *args: delete_most_recent())
-    delete_recent.grid(row = 2, column = 0, sticky = 'w', padx = (25,0), pady = 10)
+    delete_recent.grid(row = 3, column = 0, sticky = 'w', padx = (25,0), pady = 10)
 
     del_selected = ttk.Button(mainframe, text = 'Delete Selected', command = lambda *args: delete_selected())
-    del_selected.grid(row = 2, column = 1, sticky = 'e', pady = 10)
+    del_selected.grid(row = 3, column = 1, sticky = 'e', pady = 10)
 
     guess_table.bind('<Double-1>', lambda event: onDoubleClick(event))
 
-    refresh_data()
+    refresh_data('id','DESC')
 
-def refresh_data():
+def refresh_data(order, direction):
     global edge_case_label
 
     # Check if file exists
@@ -76,12 +86,12 @@ def refresh_data():
     
     guess_table.delete(*guess_table.get_children())
 
-    data = city_database.get_display_data()[0]
+    data = city_database.get_display_data(order, direction)[0]
 
-    edge_case = city_database.get_display_data()[1]
+    edge_case = city_database.get_display_data(order, direction)[1]
     
     if (edge_case):
-        edge_case_label.grid(row = 3, column = 0, sticky = 'w', padx = (25,0), pady = 2)
+        edge_case_label.grid(row = 4, column = 0, sticky = 'w', padx = (25,0))
 
     # Check if file has a table at all
     if (data == None):
@@ -96,7 +106,6 @@ def refresh_data():
         guess_table.insert(parent = '', index = 'end', values = entry, tags = (tag))
 
     stat_queries.count_correct_incorrect()
-
 
 def delete_most_recent():
     if (settings.read_setting('confirm_delete')):

@@ -345,3 +345,20 @@ def most_incorrect_cities():
     finally:
         connection.close()
 
+def most_guessed_cities():
+    connection = sqlite3.connect(STAT_FILE)
+    cursor = connection.cursor()
+
+    # Empty_case check
+    if city_database.db_is_empty():
+        return 'N/A'
+
+    try:
+        output = cursor.execute("SELECT AVG(correct_guess), SUM(correct_guess), COUNT(*), correct_city, correct_state_country FROM city_stats GROUP BY correct_city, correct_state_country ORDER BY ABS(SUM(correct_guess) - COUNT(*)) DESC, AVG(correct_guess), COUNT(*) LIMIT 5").fetchall()
+        return(output)
+    except sqlite3.OperationalError as error_code:
+        print("Failed to read database! Error Code: ", error_code)
+
+    finally:
+        connection.close()
+
