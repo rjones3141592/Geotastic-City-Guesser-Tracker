@@ -134,7 +134,7 @@ def get_display_data(order = 'id', direction = 'DESC'):
                 row_list[3] = 'No'
 
                 # Adding '*' to indicate edge case in guessing
-                if row_list[1] == row_list[4]:
+                if row_list[1] == row_list[4] and row_list[2] == row_list[5]:
                     row_list[4] = row_list[4] + '*'
                     edge_case_exists = True
                 
