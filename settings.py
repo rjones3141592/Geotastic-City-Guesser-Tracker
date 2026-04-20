@@ -15,10 +15,17 @@ def build_settings_frame(mainframe):
     style = ttk.Style()
     style.configure("Custom.TCheckbutton", font = ('Poppins',12))
 
-    dark_mode_button = ttk.Checkbutton(mainframe, text = "Change appearance", style = "Custom.TCheckbutton")
+    dark_mode_button = ttk.Checkbutton(mainframe, text = "Dark Mode", style = "Custom.TCheckbutton")
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
 
+    dark_mode_var = tk.BooleanVar(value = read_setting('dark_mode'))
+
+    dark_mode_button = ttk.Checkbutton(mainframe, variable = dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton")
+
+    dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
+
+    
 
 def modify_darkmode():
     connection = sqlite3.connect('GT_settings.db')
@@ -30,10 +37,10 @@ def modify_darkmode():
     
     swap_value = result[0]
     # Swapping value
-    if (swap_value == '1'):
-        swap_value = '0'
+    if (swap_value == True):
+        swap_value = False
     else:
-        swap_value = '1'
+        swap_value = True
 
     cursor.execute("""UPDATE settings
                        SET value = ?
@@ -90,7 +97,11 @@ def read_setting(setting):
     try:
         read_setting = cursor.execute('SELECT value FROM settings WHERE setting = ?', (setting,))
         value = read_setting.fetchone()
-        return value[0]
+
+        if value[0] == 0 or value[0] == 1:
+            return bool(int(value[0]))
+        else:
+            return value[0]
     
     except sqlite3.OperationalError as error_code:
             print("Failed to read settings!", error_code)
