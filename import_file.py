@@ -18,21 +18,25 @@ REQUESTS_PER_SECOND = 5
 GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/reverse"
 
 def load_file():
-    file_path = Path(filedialog.askopenfilename())
+    file_paths = filedialog.askopenfilenames(filetypes = [("JSON Files", "*.json")])
+
+    if len(file_paths) == 0:
+        return
 
     # Do nothing if no file was imported.
-    if (file_path.suffix == ''):
-        return
-    
-    if (file_path.suffix != '.json'):
-        msgbox.showerror(title = 'Error in Import!', message = 'A non JSON file has been imported!')
-        return
-    
-    coord_list = read_json.read_for_api_call(file_path)
+    for file_path in file_paths:
+        if (Path(file_path).suffix == ''):
+            return
+        
+        if (Path(file_path).suffix != '.json'):
+            msgbox.showerror(title = 'Error in Import!', message = 'A non JSON file has been imported!')
+            return
+        
+        coord_list = read_json.read_for_api_call(Path(file_path))
 
-    api_list = batch_reverse(coord_list)
+        api_list = batch_reverse(coord_list)
 
-    read_json.read_for_db_input_auto(file_path, api_list)
+        read_json.read_for_db_input_auto(Path(file_path), api_list)
 
     msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
