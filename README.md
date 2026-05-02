@@ -22,6 +22,8 @@ Most of the program is complete! I just need to include settings before fully re
 
 8/31/2025 - Allows for editing of database city names through history table & double clicking on an entry in the history table! Note that it will only allow for changing both guessed and target cities if the round was incorrect.
 
+5/2/2026 - Importing Files now allows users to select multiple JSON files at once! It will cycle through all files and insert them into the database.
+
 ## Special Thanks
 
 To James for convincing to contact Edutastic and asking about getting a better way to input data, only for him to go and add a feature specifically for me (and also "for own leisure"); holy cow I did NOT expect that.
