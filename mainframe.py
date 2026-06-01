@@ -16,6 +16,23 @@ def at_exit():
         city_database.db_close()
         main.destroy()
         settings.settings_close()
+    
+# Modifies tab colors for dark mode
+def apply_theme(dark_mode_val, style):
+    if dark_mode_val == True:
+        style.configure('.', background = '#121212', foreground = '#FFFFFF')
+        style.configure('TEntry', fieldbackground = '#000000', foreground = '#FFFFFF')
+        style.configure('TCombobox', fieldbackground = '#000000', selectbackground = '#000000', selectforeground = '#FFFFFF')
+        style.configure('TNotebook.Tab', background = '#121212', foreground = '#FFFFFF')
+        style.map('TNotebook.Tab', foreground = [('selected',"#5861E2"), ('!selected', '#FFFFFF')])
+        style.map('TNotebook.Tab', background = [('selected',"#252527"), ('!selected', '#121212')])
+    else:
+        style.configure('.', background = '#dcdad5', foreground = '#000000')
+        style.configure('TEntry', fieldbackground = '#FFFFFF', foreground = '#000000')
+        style.configure('TNotebook.Tab', background = '#dcdad5', foreground = '#000000')
+        tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
+
+
 
 # Establishing mainframe and sets up the notebook
 main = tk.Tk()
@@ -48,15 +65,19 @@ settings.build_settings_frame(settings_tab)
 
 # Modifying tab styling for design purposes
 tab_style = ttk.Style()
+tab_style.theme_use('clam')
+apply_theme(settings.read_setting('dark_mode'), tab_style)
 tab_style.configure('TNotebook.Tab', font = ('Roboto',12))
 tab_style.configure('TNotebook.Tab', padding = 5)
 
-tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
+
 
 main_tab_frame.grid()
 
 city_database.db_startup()
 settings.settings_startup()
+
+
 
 main.protocol("WM_DELETE_WINDOW", at_exit)
 

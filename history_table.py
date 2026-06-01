@@ -29,8 +29,12 @@ def build_insert_frame(mainframe):
     # Configuring Styling
     style = ttk.Style()
     style.configure('Treeview.Heading', font = ('Poppins', 12))
-    guess_table.tag_configure('oddrow', background = "#E6FAFF")
-    guess_table.tag_configure('evenrow', background = "#FFFFFF")
+    if (settings.read_setting('dark_mode') == False):
+        guess_table.tag_configure('oddrow', background = "#E6FAFF")
+        guess_table.tag_configure('evenrow', background = "#FFFFFF")
+    else:
+        guess_table.tag_configure('oddrow', background = "#0E1729")
+        guess_table.tag_configure('evenrow', background = "#000000")
     scrollbar = ttk.Scrollbar(mainframe, orient = 'vertical', command = guess_table.yview)
     scrollbar.grid(row = 2, column = 2, sticky = 'ns')
 

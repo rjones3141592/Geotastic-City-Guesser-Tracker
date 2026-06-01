@@ -15,36 +15,23 @@ def build_settings_frame(mainframe):
     style = ttk.Style()
     style.configure("Custom.TCheckbutton", font = ('Poppins',12))
 
-    dark_mode_button = ttk.Checkbutton(mainframe, text = "Dark Mode", style = "Custom.TCheckbutton")
+    mainframe.dark_mode_var = tk.BooleanVar(value = bool(int(read_setting('dark_mode'))))
 
-    dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
+    print(mainframe.dark_mode_var.get())
 
-    dark_mode_var = tk.BooleanVar(value = read_setting('dark_mode'))
-
-    dark_mode_button = ttk.Checkbutton(mainframe, variable = dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton")
+    dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_darkmode(mainframe.dark_mode_var.get()))
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
 
     
 
-def modify_darkmode():
+def modify_darkmode(value):
     connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
-    dark_mode = cursor.execute("SELECT value FROM settings WHERE setting = 'dark_mode'")
-
-    result = cursor.fetchone()
-    
-    swap_value = result[0]
-    # Swapping value
-    if (swap_value == True):
-        swap_value = False
-    else:
-        swap_value = True
-
     cursor.execute("""UPDATE settings
                        SET value = ?
-                       WHERE setting = 'dark_mode'""", (swap_value))
+                       WHERE setting = 'dark_mode'""", (value,))
     
     connection.commit()
     connection.close()
@@ -98,7 +85,7 @@ def read_setting(setting):
         read_setting = cursor.execute('SELECT value FROM settings WHERE setting = ?', (setting,))
         value = read_setting.fetchone()
 
-        if value[0] == 0 or value[0] == 1:
+        if int(value[0]) == 0 or int(value[0]) == 1:
             return bool(int(value[0]))
         else:
             return value[0]

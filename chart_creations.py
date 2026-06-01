@@ -9,10 +9,10 @@ def percent_correct_pie(data):
 
     # Configuring figure visuals
     fig = Figure(figsize = (3, 3))
-    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     fig.subplots_adjust(left = 0, right = 1, top = 1, bottom = 0)
     accuracy_figure = fig.add_subplot(111)
-    accuracy_figure.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    accuracy_figure.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
 
     # Creating pie chart with legend
     accuracy_figure.pie(data, radius = 1, labels = ['',''], autopct = '%0.2f%%', shadow = False, colors = ['#8AEA95', '#E5716B'])
@@ -28,10 +28,10 @@ def time_histogram(data):
 
     # Configuring figure visuals
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     timing_histogram = fig.add_subplot(111)
-    timing_histogram.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    timing_histogram.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     timing_histogram.hist(data, bins = 30, stacked = True, rwidth = 0.9, color = ['#8AEA95', '#E5716B'])
 
     timing_histogram.legend(loc = 'best', labels = histogram_labels)
@@ -50,10 +50,10 @@ def rolling_average_line(data):
     # Recent Average, Overall Average
 
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     rolling_line_plot = fig.add_subplot(111)
-    rolling_line_plot.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    rolling_line_plot.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     # Rolling averages
     rolling_line_plot.plot(data, color = "#6699DB")
 
@@ -80,10 +80,10 @@ def rolling_average_line(data):
 def streaks_histogram(data):
     # Configuring figure visuals
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     streak_histogram = fig.add_subplot(111)
-    streak_histogram.patch.set_facecolor((240 / 255.0, 240 / 255.0 , 240 / 255.0, 1))
+    streak_histogram.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
 
     # Setting bins to be from 0 to max(data) + 2 to ensure even spacing (and integer evaluations of streak distribution)
     streak_histogram.hist(data, bins = range(0, max(data) + 2), align = 'left', rwidth = 0.9, color = '#6699DB')
