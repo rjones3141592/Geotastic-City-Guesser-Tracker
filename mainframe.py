@@ -7,7 +7,11 @@ import settings
 import data_insertion
 import history_table
 import display_statistics
+import chart_creations
 import import_file
+import overall_tab
+import accuracy_streaks_tab
+import timing_tab
 from tkinter import filedialog
 
 # Ensures the database closes
@@ -18,20 +22,38 @@ def at_exit():
         settings.settings_close()
     
 # Modifies tab colors for dark mode
-def apply_theme(dark_mode_val, style):
+def apply_theme(dark_mode_val, style, main):
     if dark_mode_val == True:
-        style.configure('.', background = '#121212', foreground = '#FFFFFF')
+        style.configure('.', background = '#121212', foreground = '#FFFFFF', highlightbackground = "#2A2A2E")
         style.configure('TEntry', fieldbackground = '#000000', foreground = '#FFFFFF')
         style.configure('TCombobox', fieldbackground = '#000000', selectbackground = '#000000', selectforeground = '#FFFFFF')
         style.configure('TNotebook.Tab', background = '#121212', foreground = '#FFFFFF')
-        style.map('TNotebook.Tab', foreground = [('selected',"#5861E2"), ('!selected', '#FFFFFF')])
-        style.map('TNotebook.Tab', background = [('selected',"#252527"), ('!selected', '#121212')])
+        style.map('TNotebook.Tab', background = [('selected',"#252527"), ('!selected', '#121212'), ('active', '#252527')])
+        style.map('TNotebook.Tab', foreground = [('selected','#636DF7'), ('!selected', '#FFFFFF')])
+        style.map('TCombobox', fieldbackground = [('readonly','#000000')], selectbackground = [('readonly','#000000')], selectforeground = [('readonly','#FFFFFF')])
+        main.option_add('*TCombobox*Listbox.background', '#000000')
+        main.option_add('*TCombobox*Listbox.foreground', '#FFFFFF')
+        main.option_add('*TCombobox*Listbox.selectbackground', '#FFFFFF')
+        main.option_add('*TCombobox*Listbox.selectforeground', '#FFFFFF')
     else:
-        style.configure('.', background = '#dcdad5', foreground = '#000000')
+        style.configure('.', background = '#dcdad5', foreground = '#000000', highlightbackground = "#FFFFFF")
         style.configure('TEntry', fieldbackground = '#FFFFFF', foreground = '#000000')
+        style.configure('TCombobox', fieldbackground = '#FFFFFF', selectbackground = '#FFFFFF', selectforeground = '#000000')
         style.configure('TNotebook.Tab', background = '#dcdad5', foreground = '#000000')
-        tab_style.map('TNotebook.Tab', foreground = [('selected','#636DF7')])
-
+        style.map('TCombobox', fieldbackground = [('readonly','#FFFFFF')], selectbackground = [('readonly','#FFFFFF')], selectforeground = [('readonly','#000000')])
+        style.map('TNotebook.Tab', foreground = [('selected','#636DF7'), ('!selected', '#000000')])
+        style.map('TNotebook.Tab', background = [('selected','#FFFFFF'), ('!selected', '#dcdad5'), ('active', '#FFFFFF')])
+        main.option_add('*TCombobox*Listbox.background', '#FFFFFF')
+        main.option_add('*TCombobox*Listbox.foreground', '#000000')
+        main.option_add('*TCombobox*Listbox.selectbackground', '#FFFFFF')
+        main.option_add('*TCombobox*Listbox.selectforeground', '#000000')
+    
+    chart_creations.mpl_color()
+    history_table.refresh_colors()
+    overall_tab.refresh_pie_chart()
+    accuracy_streaks_tab.refresh_histogram()
+    accuracy_streaks_tab.refresh_line_plot()
+    timing_tab.refresh_histogram()
 
 
 # Establishing mainframe and sets up the notebook
@@ -59,17 +81,18 @@ history_table.build_insert_frame(guess_history_tab)
 main_tab_frame.add(display_statistics_tab, text = 'Statistics')
 display_statistics.build_insert_frame(display_statistics_tab)
 
-main_tab_frame.add(settings_tab, text = "Settings")
-settings.build_settings_frame(settings_tab)
-
-
 # Modifying tab styling for design purposes
 tab_style = ttk.Style()
 tab_style.theme_use('clam')
-apply_theme(settings.read_setting('dark_mode'), tab_style)
+apply_theme(settings.read_setting('dark_mode'), tab_style, main)
+
+def apply_theme_settings():
+    apply_theme(settings.read_setting('dark_mode'), tab_style, main)
 tab_style.configure('TNotebook.Tab', font = ('Roboto',12))
 tab_style.configure('TNotebook.Tab', padding = 5)
 
+main_tab_frame.add(settings_tab, text = "Settings")
+settings.build_settings_frame(settings_tab, apply_theme_settings)
 
 
 main_tab_frame.grid()

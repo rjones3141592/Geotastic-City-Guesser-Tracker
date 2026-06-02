@@ -8,7 +8,7 @@ connection = None
 # Default settings sql injection
 default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', ''), ('rolling_number', 10)"""
 
-def build_settings_frame(mainframe):
+def build_settings_frame(mainframe, apply_theme):
     header_label = ttk.Label(mainframe, text = "Settings:", font = ('Poppins',16))
     header_label.grid(row = 0, column = 0, sticky = 'w', padx = 5, pady = 5)
 
@@ -19,13 +19,15 @@ def build_settings_frame(mainframe):
 
     print(mainframe.dark_mode_var.get())
 
-    dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_darkmode(mainframe.dark_mode_var.get()))
+    dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_darkmode(mainframe.dark_mode_var.get(), apply_theme))
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
 
+
+
     
 
-def modify_darkmode(value):
+def modify_darkmode(value, apply_theme):
     connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
@@ -35,6 +37,8 @@ def modify_darkmode(value):
     
     connection.commit()
     connection.close()
+
+    apply_theme()
 
 def settings_startup():
     global connection

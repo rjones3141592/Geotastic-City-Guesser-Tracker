@@ -81,6 +81,14 @@ def build_insert_frame(mainframe):
 
     refresh_data('id','DESC')
 
+def refresh_colors():
+    global guess_table
+    if (settings.read_setting('dark_mode') == False):
+        guess_table.tag_configure('oddrow', background = "#E6FAFF")
+        guess_table.tag_configure('evenrow', background = "#FFFFFF")
+    else:
+        guess_table.tag_configure('oddrow', background = "#0E1729")
+        guess_table.tag_configure('evenrow', background = "#000000")
 def refresh_data(order, direction):
     global edge_case_label
 

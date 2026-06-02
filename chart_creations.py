@@ -2,17 +2,24 @@ from matplotlib.figure import Figure
 import numpy as np
 import stat_queries
 from matplotlib.ticker import MaxNLocator
+import settings
+from matplotlib import style
 
+if settings.read_setting('dark_mode') == True:
+    style.use('dark_background')
+else:
+    style.use('default')
 
 def percent_correct_pie(data):
     right_wrong_labels = ['Correct','Incorrect']
 
     # Configuring figure visuals
     fig = Figure(figsize = (3, 3))
-    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    #dcdad5
+    theme_colors(fig)
     fig.subplots_adjust(left = 0, right = 1, top = 1, bottom = 0)
     accuracy_figure = fig.add_subplot(111)
-    accuracy_figure.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(accuracy_figure)
 
     # Creating pie chart with legend
     accuracy_figure.pie(data, radius = 1, labels = ['',''], autopct = '%0.2f%%', shadow = False, colors = ['#8AEA95', '#E5716B'])
@@ -28,10 +35,10 @@ def time_histogram(data):
 
     # Configuring figure visuals
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(fig)
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     timing_histogram = fig.add_subplot(111)
-    timing_histogram.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(timing_histogram)
     timing_histogram.hist(data, bins = 30, stacked = True, rwidth = 0.9, color = ['#8AEA95', '#E5716B'])
 
     timing_histogram.legend(loc = 'best', labels = histogram_labels)
@@ -50,10 +57,10 @@ def rolling_average_line(data):
     # Recent Average, Overall Average
 
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(fig)
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     rolling_line_plot = fig.add_subplot(111)
-    rolling_line_plot.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(rolling_line_plot)
     # Rolling averages
     rolling_line_plot.plot(data, color = "#6699DB")
 
@@ -80,10 +87,10 @@ def rolling_average_line(data):
 def streaks_histogram(data):
     # Configuring figure visuals
     fig = Figure(figsize = (4,3))
-    fig.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(fig)
     fig.subplots_adjust(left = 0.15, right = .95, top = .9, bottom = 0.15)
     streak_histogram = fig.add_subplot(111)
-    streak_histogram.patch.set_facecolor((220 / 255.0, 218 / 255.0 , 213 / 255.0, 1))
+    theme_colors(streak_histogram)
 
     # Setting bins to be from 0 to max(data) + 2 to ensure even spacing (and integer evaluations of streak distribution)
     streak_histogram.hist(data, bins = range(0, max(data) + 2), align = 'left', rwidth = 0.9, color = '#6699DB')
@@ -98,3 +105,19 @@ def streaks_histogram(data):
     fig.tight_layout()
 
     return streak_histogram, fig
+
+def theme_colors(figure):
+    dark_mode_val = settings.read_setting('dark_mode')
+
+    if dark_mode_val == True:
+        figure.patch.set_facecolor('#121212')
+    else:
+        figure.patch.set_facecolor('#dcdad5')
+
+def mpl_color():
+    dark_mode_val = settings.read_setting('dark_mode')
+
+    if dark_mode_val == True:
+        style.use('dark_background')
+    else:
+        style.use('default')
