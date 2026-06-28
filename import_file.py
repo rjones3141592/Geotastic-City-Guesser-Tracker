@@ -67,6 +67,7 @@ def reverse_geocode(lat, lon):
                 return {}
         elif response.status_code == 429:
             logger.warning("Rate limit exceeded. Too many requests.")
+            msgbox.showerror(title = 'Exceeded Rate Limit!', message = 'Rate limit exceeded. Too many requests was given. Please check your API Key usage on Geoapify!')
             return {}
         else:
             logger.error(f"Error: {response.status_code} for coordinates: ({lat}, {lon})")

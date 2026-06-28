@@ -17,23 +17,27 @@ def build_settings_frame(mainframe, apply_theme):
 
     mainframe.dark_mode_var = tk.BooleanVar(value = bool(int(read_setting('dark_mode'))))
 
-    print(mainframe.dark_mode_var.get())
+    mainframe.confirm_exit_var = tk.BooleanVar(value = bool(int(read_setting('confirm_exit'))))
 
-    dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_darkmode(mainframe.dark_mode_var.get(), apply_theme))
+    dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("dark_mode", mainframe.dark_mode_var.get(), apply_theme))
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
+
+    ask_exit_button = ttk.Checkbutton(mainframe, variable = mainframe.confirm_exit_var, onvalue = True, offvalue = False, text = "Confirm Exit", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("confirm_exit", mainframe.dark_mode_var.get(), apply_theme))
+
+    ask_exit_button.grid(row = 2, column = 0, sticky = 'w', pady = 5, padx = 5)
 
 
 
     
 
-def modify_darkmode(value, apply_theme):
+
+
+def modify_setting(setting, value, apply_theme):
     connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
-    cursor.execute("""UPDATE settings
-                       SET value = ?
-                       WHERE setting = 'dark_mode'""", (value,))
+    cursor.execute(f'UPDATE settings SET value = {value} WHERE setting = {setting}')
     
     connection.commit()
     connection.close()

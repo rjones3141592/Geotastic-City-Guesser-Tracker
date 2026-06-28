@@ -16,10 +16,11 @@ from tkinter import filedialog
 
 # Ensures the database closes
 def at_exit():
-    if msgbox.askokcancel("Confirm Exit", "Do you want to exit the program?"):
-        city_database.db_close()
-        main.destroy()
-        settings.settings_close()
+    if settings.read_setting("confirm_exit"):
+        if msgbox.askokcancel("Confirm Exit", "Do you want to exit the program?"):
+            city_database.db_close()
+            main.destroy()
+            settings.settings_close()
     
 # Modifies tab colors for dark mode
 def apply_theme(dark_mode_val, style, main):
