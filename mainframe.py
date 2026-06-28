@@ -21,6 +21,10 @@ def at_exit():
             city_database.db_close()
             main.destroy()
             settings.settings_close()
+    else:
+        city_database.db_close()
+        main.destroy()
+        settings.settings_close()
     
 # Modifies tab colors for dark mode
 def apply_theme(dark_mode_val, style, main):

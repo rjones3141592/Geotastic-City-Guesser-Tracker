@@ -23,7 +23,7 @@ def build_settings_frame(mainframe, apply_theme):
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
 
-    ask_exit_button = ttk.Checkbutton(mainframe, variable = mainframe.confirm_exit_var, onvalue = True, offvalue = False, text = "Confirm Exit", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("confirm_exit", mainframe.dark_mode_var.get(), apply_theme))
+    ask_exit_button = ttk.Checkbutton(mainframe, variable = mainframe.confirm_exit_var, onvalue = True, offvalue = False, text = "Confirm Exit", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("confirm_exit", mainframe.confirm_exit_var.get(), apply_theme))
 
     ask_exit_button.grid(row = 2, column = 0, sticky = 'w', pady = 5, padx = 5)
 
@@ -37,10 +37,12 @@ def modify_setting(setting, value, apply_theme):
     connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
-    cursor.execute(f'UPDATE settings SET value = {value} WHERE setting = {setting}')
+    cursor.execute(f'UPDATE settings SET value = ? WHERE setting = ?', (value, setting))
     
     connection.commit()
     connection.close()
+
+    
 
     apply_theme()
 
