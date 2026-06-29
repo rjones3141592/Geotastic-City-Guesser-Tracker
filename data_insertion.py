@@ -88,6 +88,10 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
         if (actual_city_value == '' or actual_state_country_value == ''):
             msgbox.showerror(title = 'Missing Parameters', message = 'Input fields cannot be empty!')
             return
+        
+    if (settings.read_api() == ''):
+        msgbox.showerror(title = 'Missing API Key', message = 'API Key is Missing!')
+        return
 
     # Converting time to float, catching error in case anything other than numbers is entered
     # Only done if time is not None
@@ -162,7 +166,7 @@ def hide_show_correct_city(checkbox_status, ans_city_label, ans_city_entry, ans_
 def geocode_search(city, country):
     params = {
         'text': city + ', ' + country,
-        'apiKey': settings.read_setting('api_key'),
+        'apiKey': settings.read_api(),
         'format': 'json',
         'type': 'city'
     }

@@ -65,6 +65,7 @@ def apply_theme(dark_mode_val, style, main):
 main = tk.Tk()
 main.title('City Streak Stat Tracker')
 main_tab_frame = ttk.Notebook(main)
+settings.settings_startup()
 
 # Created 5 tabs for 5 aspects of program using a grid layout, initialized below.
 import_data_tab = ttk.Frame(main_tab_frame)
@@ -103,7 +104,6 @@ settings.build_settings_frame(settings_tab, apply_theme_settings)
 main_tab_frame.grid()
 
 city_database.db_startup()
-settings.settings_startup()
 
 
 

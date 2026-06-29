@@ -6,7 +6,7 @@ import sqlite3
 
 connection = None
 # Default settings sql injection
-default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('confirm_reset', True), ('api_key', ''), ('rolling_number', 10)"""
+default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('api_key', ''), ('rolling_number', 10)"""
 
 def build_settings_frame(mainframe, apply_theme):
     header_label = ttk.Label(mainframe, text = "Settings:", font = ('Poppins',16))
@@ -19,6 +19,8 @@ def build_settings_frame(mainframe, apply_theme):
 
     mainframe.confirm_exit_var = tk.BooleanVar(value = bool(int(read_setting('confirm_exit'))))
 
+    mainframe.confirm_delete_var = tk.BooleanVar(value = bool(int(read_setting('confirm_delete'))))
+
     dark_mode_button = ttk.Checkbutton(mainframe, variable = mainframe.dark_mode_var, onvalue = True, offvalue = False, text = "Dark Mode", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("dark_mode", mainframe.dark_mode_var.get(), apply_theme))
 
     dark_mode_button.grid(row = 1, column = 0, sticky = 'w', pady = 5, padx = 5)
@@ -26,6 +28,19 @@ def build_settings_frame(mainframe, apply_theme):
     ask_exit_button = ttk.Checkbutton(mainframe, variable = mainframe.confirm_exit_var, onvalue = True, offvalue = False, text = "Confirm Exit", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("confirm_exit", mainframe.confirm_exit_var.get(), apply_theme))
 
     ask_exit_button.grid(row = 2, column = 0, sticky = 'w', pady = 5, padx = 5)
+
+    ask_delete_button = ttk.Checkbutton(mainframe, variable = mainframe.confirm_delete_var, onvalue = True, offvalue = False, text = "Confirm Delete", style = "Custom.TCheckbutton", command = lambda *args: modify_setting("confirm_delete", mainframe.confirm_delete_var.get(), apply_theme))
+
+    ask_delete_button.grid(row = 3, column = 0, sticky = 'w', pady = 5, padx = 5)
+
+    api_key_label = ttk.Label(mainframe, text = "Api Key: ", font = ('Poppins',11))
+    api_key_label.grid(row = 4, column = 0, padx = 5, pady = 15, sticky = 'w')
+    
+    api_key_entry = ttk.Entry(mainframe, width = 30)
+    api_key_entry.grid(row = 4, column = 1, sticky = 'w', padx = 5, pady = 15)
+
+    update_api_button = ttk.Button(mainframe, text = 'Update API', command = lambda *args: modify_setting("api_key", api_key_entry, apply_theme))
+    update_api_button.grid(row = 4, column = 2, sticky = 'w', padx = 5, pady = 15)
 
 
 
@@ -37,7 +52,19 @@ def modify_setting(setting, value, apply_theme):
     connection = sqlite3.connect('GT_settings.db')
     cursor = connection.cursor()
 
+    if type(value) == ttk.Entry:
+        temp_value = value.get()
+        value.delete(0,END)
+        value = temp_value
+
+    if value == '':
+        msgbox.showerror(title = 'Missing API Key', message = 'Textbox for API Key updating cannot be empty!')
+        connection.commit()
+        connection.close()
+        return
+
     cursor.execute(f'UPDATE settings SET value = ? WHERE setting = ?', (value, setting))
+
     
     connection.commit()
     connection.close()
@@ -95,10 +122,30 @@ def read_setting(setting):
         read_setting = cursor.execute('SELECT value FROM settings WHERE setting = ?', (setting,))
         value = read_setting.fetchone()
 
+        if (value[0]) == '':
+            return ''
+        
+
         if int(value[0]) == 0 or int(value[0]) == 1:
             return bool(int(value[0]))
         else:
             return value[0]
+    
+    except sqlite3.OperationalError as error_code:
+            print("Failed to read settings!", error_code)
+
+    finally:
+        connection.close()
+
+def read_api():
+    connection = sqlite3.connect("GT_settings.db")
+    cursor = connection.cursor()
+
+    try:
+        read_setting = cursor.execute('SELECT value FROM settings WHERE setting = ?', ("api_key",))
+        value = read_setting.fetchone()
+    
+        return value[0]
     
     except sqlite3.OperationalError as error_code:
             print("Failed to read settings!", error_code)
