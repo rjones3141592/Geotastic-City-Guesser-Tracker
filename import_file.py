@@ -20,6 +20,9 @@ GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/reverse"
 def load_file():
     file_paths = filedialog.askopenfilenames(filetypes = [("JSON Files", "*.json")])
 
+    error_401 = False
+    error_any = False
+
     if len(file_paths) == 0:
         return
 
@@ -36,12 +39,24 @@ def load_file():
 
         api_list = batch_reverse(coord_list)
 
-        read_json.read_for_db_input_auto(Path(file_path), api_list)
+        if {401} in api_list:
+            error_401 = True
+            break
+        elif {} in api_list:
+            error_any = True
+        else:
+            read_json.read_for_db_input_auto(Path(file_path), api_list)
 
-    msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
+    if (error_401 == False and error_any == False):
+        msgbox.showinfo("Sucessful Input!", "Data successfully inputted into database!")
 
-    history_table.refresh_data(history_table.order_parameters[history_table.order_combobox.get()][0], history_table.order_parameters[history_table.order_combobox.get()][1])
-    display_statistics.refresh_all_data()
+        history_table.refresh_data(history_table.order_parameters[history_table.order_combobox.get()][0], history_table.order_parameters[history_table.order_combobox.get()][1])
+        display_statistics.refresh_all_data()
+    elif error_401:
+        msgbox.showerror(title = 'Invalid API Key!', message = 'API Key is not valid! Please check your API on Geoapify and reinsert it in the settings!')
+    else: # error_any
+        msgbox.showerror(title = 'Error!', message = 'An error occured! Please contact the developer!')
+
 
 # This function is adapted from Geoapify's MIT-licensed sample code
 # Source: https://www.geoapify.com/tutorial/reverse-geocoding-python/
@@ -69,6 +84,9 @@ def reverse_geocode(lat, lon):
             logger.warning("Rate limit exceeded. Too many requests.")
             msgbox.showerror(title = 'Exceeded Rate Limit!', message = 'Rate limit exceeded. Too many requests was given. Please check your API Key usage on Geoapify!')
             return {}
+        elif response.status_code == 401:
+            logger.warning("Invalid API Key!")
+            return {401}
         else:
             logger.error(f"Error: {response.status_code} for coordinates: ({lat}, {lon})")
             return {}
@@ -95,6 +113,7 @@ def batch_reverse(batch_list):
     
     wait(tasks, return_when = ALL_COMPLETED)
     results = [task.result() for task in tasks]
+
 
     return results
 

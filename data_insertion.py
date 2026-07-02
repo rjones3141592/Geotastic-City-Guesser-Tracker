@@ -116,6 +116,10 @@ def submitting_attempt(guessed_city, guessed_stc, correct_boolean, actual_city =
 
     guess_api = geocode_search(guessed_city_value, guessed_stc_value)
 
+    if guess_api == 401:
+        msgbox.showerror(title = 'Invalid API Key!', message = 'API Key is not valid! Please check your API on Geoapify and reinsert it in the settings!')
+        return
+
     if (not correct):
         actual_api = geocode_search(actual_city_value, actual_state_country_value)
 
@@ -172,6 +176,9 @@ def geocode_search(city, country):
     }
 
     output = requests.get(url = GEOAPIFY_API_URL, params = params)
+
+    if output.status_code == 401:
+        return 401
     
     data = output.json()
 

@@ -125,8 +125,8 @@ def read_setting(setting):
         if (value[0]) == '':
             return ''
         
-
-        if int(value[0]) == 0 or int(value[0]) == 1:
+    
+        if setting == 'dark_mode' or setting == 'confirm_exit' or setting == 'confirm_delete':
             return bool(int(value[0]))
         else:
             return value[0]
