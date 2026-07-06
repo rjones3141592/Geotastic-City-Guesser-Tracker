@@ -69,16 +69,16 @@ def rolling_average_line(data):
     
     # Setting labels and legend
     rolling_line_plot.legend(loc = 'best', labels = line_plot_labels)
-    rolling_line_plot.set_title('Rolling Accuracy - Past 10 Rounds')
+    rolling_line_plot.set_title(f'Rolling Accuracy - Past {settings.read_setting("rolling_number")} Rounds', )
     rolling_line_plot.set_xlabel('Recent Round #')
     rolling_line_plot.set_ylabel('Accuracy (%)')
     
     # Setting boundaries of chart with reverse x tick label
     rolling_line_plot.set_ylim(0, 100)
-    rolling_line_plot.set_yticks(range(0, 101, 10))
+    rolling_line_plot.set_yticks(range(0, 101, int(settings.read_setting("rolling_number"))))
     rolling_line_plot.set_xlim(0, len(data)-1)
-    rolling_line_plot.set_xticks(range(0, 10))
-    rolling_line_plot.set_xticklabels([10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+    rolling_line_plot.set_xticks(range(0, int(settings.read_setting("rolling_number"))))
+    rolling_line_plot.set_xticklabels(list(range(int(settings.read_setting("rolling_number")), 0, -1)))
 
     fig.tight_layout()
     
