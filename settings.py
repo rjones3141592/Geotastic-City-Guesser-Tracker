@@ -42,7 +42,14 @@ def build_settings_frame(mainframe, apply_theme):
     update_api_button = ttk.Button(mainframe, text = 'Update API', command = lambda *args: modify_setting("api_key", api_key_entry, apply_theme))
     update_api_button.grid(row = 4, column = 2, sticky = 'w', padx = 5, pady = 15)
 
+    rolling_num_label = ttk.Label(mainframe, text = "Number of Rounds Shown: ", font = ('Poppins',11))
+    rolling_num_label.grid(row = 5, column = 0, padx = 5, pady = 15, sticky = 'w')
 
+    num_combo = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3]
+    rolling_combobox = ttk.Combobox(mainframe, value = num_combo, state = 'readonly')
+    rolling_combobox.current(num_combo.index(int(read_setting('rolling_number'))))
+
+    rolling_combobox.grid(row = 5, column = 1, padx = 5, pady = 15, sticky = 'w')
 
     
 
