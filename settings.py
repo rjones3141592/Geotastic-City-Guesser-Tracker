@@ -49,7 +49,9 @@ def build_settings_frame(mainframe, apply_theme):
     rolling_combobox = ttk.Combobox(mainframe, value = num_combo, state = 'readonly')
     rolling_combobox.current(num_combo.index(int(read_setting('rolling_number'))))
 
-    rolling_combobox.grid(row = 5, column = 1, padx = 5, pady = 15, sticky = 'w')
+    rolling_combobox.grid(row = 5, column = 1, padx = (15,0), pady = (0,10))
+
+    rolling_combobox.bind('<<ComboboxSelected>>', lambda x: modify_setting('rolling_number', rolling_combobox.get(), apply_theme))
 
     
 

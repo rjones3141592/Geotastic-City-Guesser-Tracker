@@ -1,5 +1,6 @@
 import sqlite3
 import city_database
+import settings
 from iso3166 import countries
 connection = None
 
@@ -298,7 +299,7 @@ def rolling_round_accuracy():
         pc_accuracy = round((entry / float(entry + 1)) * 100, 2)
         round_accuracy.append(pc_accuracy)
         
-    return round_accuracy[-10:]
+    return round_accuracy[-1 * int(settings.read_setting('rolling_number')):]
 
 # Gets average streak
 def average_streaks():
