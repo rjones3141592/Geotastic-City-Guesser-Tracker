@@ -107,7 +107,7 @@ def settings_startup():
             try:
                 cursor.execute(default_settings)
                 connection.commit()
-                print("Successfully set default settings!")
+                print("Successfully initialized settings!")
                 return connection
 
             except sqlite3.OperationalError as error_code:
