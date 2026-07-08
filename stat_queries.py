@@ -216,10 +216,18 @@ def average_times_correct_incorrect():
     try:
         # Executes two AVG calls onto the database
         output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 1 AND guess_time IS NOT NULL").fetchall()
-        avg_correct_time = round(output[0][0], 2)
+
+        if (type(output[0][0]) != type(None)):
+            avg_correct_time = round(output[0][0], 2)
+        else:
+            avg_correct_time = "N/A"
 
         output = cursor.execute("SELECT AVG(guess_time) FROM city_stats WHERE correct_guess = 0 AND guess_time IS NOT NULL").fetchall()
-        avg_incorrect_time = round(output[0][0], 2)
+
+        if (type(output[0][0]) != type(None)):
+            avg_incorrect_time = round(output[0][0], 2)
+        else:
+            avg_incorrect_time = "N/A"
         
         # Gives both in one line, and can be accessed through list indexing
         return [str(avg_correct_time) + ' seconds', str(avg_incorrect_time) + ' seconds']
