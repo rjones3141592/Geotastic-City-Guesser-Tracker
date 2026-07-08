@@ -75,7 +75,7 @@ def rolling_average_line(data):
     
     # Setting boundaries of chart with reverse x tick label
     rolling_line_plot.set_ylim(0, 100)
-    rolling_line_plot.set_yticks(range(0, 101, int(settings.read_setting("rolling_number"))))
+    rolling_line_plot.set_yticks(range(0, 101, 10))
     rolling_line_plot.set_xlim(0, len(data)-1)
     rolling_line_plot.set_xticks(range(0, int(settings.read_setting("rolling_number"))))
     rolling_line_plot.set_xticklabels(list(range(int(settings.read_setting("rolling_number")), 0, -1)))
