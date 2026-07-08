@@ -106,10 +106,12 @@ main_tab_frame.grid()
 city_database.db_startup()
 
 
-
 main.protocol("WM_DELETE_WINDOW", at_exit)
 
 main.resizable(width=False, height=False)
+
+if (settings.read_api() == ''):
+    msgbox.showinfo("Welcome!", f"Welcome to this small stat tracking program! \n To ensure proper functionality, please create an account at Geoapify: https://www.geoapify.com/ \n Afterwards, please go into Settings and paste the API code for the program to use! \n If you have any questions, comments, or concerns, please do not hesitate to contact me!")
 
 main.mainloop()
 

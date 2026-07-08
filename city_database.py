@@ -32,7 +32,7 @@ def db_startup():
             
             print("Table created successfully!")
         except sqlite3.OperationalError as error_code:
-            print("Failed to create database table! Eorr code: ", error_code)
+            print("Failed to create database table! Error code: ", error_code)
 
     except sqlite3.OperationalError as error_code:
         print("Failed to open Stat Database! Error Code: ", error_code)

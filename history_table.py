@@ -89,11 +89,15 @@ def refresh_colors():
     else:
         guess_table.tag_configure('oddrow', background = "#0E1729")
         guess_table.tag_configure('evenrow', background = "#000000")
+
 def refresh_data(order, direction):
     global edge_case_label
 
     # Check if file exists
     if (city_database.db_exists() == False):
+        return
+    
+    if (city_database.db_is_empty() == True):
         return
     
     guess_table.delete(*guess_table.get_children())
@@ -120,6 +124,10 @@ def refresh_data(order, direction):
     stat_queries.count_correct_incorrect()
 
 def delete_most_recent():
+    if (city_database.db_is_empty() == True):
+        msgbox.showerror(title = 'No Data!', message = 'The table is empty! There is nothing for you to delete!')
+        return
+    
     if (settings.read_setting('confirm_delete')):
         if msgbox.askokcancel("Confirm Delete", "Are you sure you want to delete the most recent entry?"):
             city_database.db_remove_recent()
@@ -131,6 +139,10 @@ def delete_most_recent():
 
 
 def delete_selected():
+    if (city_database.db_is_empty() == True):
+        msgbox.showerror(title = 'No Data!', message = 'The table is empty! There is nothing for you to delete!')
+        return
+    
     selection = guess_table.focus()
     
     if (selection == ''):

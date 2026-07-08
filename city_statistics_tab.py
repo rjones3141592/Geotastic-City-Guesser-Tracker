@@ -40,7 +40,10 @@ def build_insert_frame(frame):
 
 def refresh_lists():
     global correct_labels, incorrect_labels
-
+     # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A']
+    
     most_correct = stat_queries.most_correct_cities()
     i = 1
 

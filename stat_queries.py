@@ -290,6 +290,10 @@ def all_streaks():
 
 # Gets accuracy of each round, with a setting to change amount of rounds shown in database
 def rolling_round_accuracy():
+    # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A']
+    
     # Gets accuracy of each round by adding one and then dividing
     data = all_streaks()
 
@@ -303,6 +307,10 @@ def rolling_round_accuracy():
 
 # Gets average streak
 def average_streaks():
+     # Empty_case check
+    if city_database.db_is_empty():
+        return ['N/A']
+    
     data = all_streaks()
 
     data_sum = sum(data)
