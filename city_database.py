@@ -1,11 +1,13 @@
 import sqlite3
 import os
+import settings
 connection = None
+
+db_path = os.path.join(settings.get_appdata_location(), 'GT_stat_file.db')
 
 def db_startup():
     global connection
     # Creating file
-    db_file = "GT_stat_file.db"
 
     # SQL Statement on table creation
     geotastic_stat_table = """CREATE TABLE IF NOT EXISTS city_stats (
@@ -22,7 +24,7 @@ def db_startup():
 
     # Try except to catch any issues with starting SQL connection
     try:
-        connection = sqlite3.connect(db_file)
+        connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
 
         # Another try except, this time for table creation
@@ -40,13 +42,13 @@ def db_startup():
         connection.close()
 
 def db_exists():
-    return os.path.isfile('GT_stat_file.db')
+    return os.path.isfile(db_path)
 
 # Checking if city_stats db file has any inputted values or if it is just blank.
 def db_is_empty():
     if not db_exists():
         return True
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         cursor.execute('SELECT name FROM sqlite_master WHERE name = "city_stats"')
@@ -71,7 +73,7 @@ def db_add(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_
     if stc_guess == None:
         stc_guess = 'Unknown'
     
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         cursor.execute("INSERT INTO city_stats (guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time) VALUES (?, ?, ?, ?, ?, ?)",(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_time))
@@ -83,7 +85,7 @@ def db_add(city_guess, stc_guess, was_correct, correct_city, correct_stc, guess_
 
 # Function to remove most recent city
 def db_remove_recent():
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
 
@@ -98,7 +100,7 @@ def db_remove_recent():
 
 # Function to read all data from the table to print onto table in guess history
 def db_read_all():
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         read_all = cursor.execute('SELECT id, guessed_city, guessed_state_country, correct_guess, correct_city, correct_state_country, guess_time, timestamp FROM city_stats ORDER BY id DESC')
@@ -113,7 +115,7 @@ def db_read_all():
         connection.close()
 
 def get_display_data(order = 'id', direction = 'DESC'):
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     edge_case_exists = False
@@ -152,7 +154,7 @@ def get_display_data(order = 'id', direction = 'DESC'):
         connection.close()
 
 def db_delete_selected(id):
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
 
@@ -165,7 +167,7 @@ def db_delete_selected(id):
         connection.close()
 
 def db_edit_cities(id, guessed_city, target_city):
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         cursor.execute("UPDATE city_stats SET guessed_city = ?, correct_city = ? WHERE id = ?", (guessed_city, target_city, id)).fetchone()

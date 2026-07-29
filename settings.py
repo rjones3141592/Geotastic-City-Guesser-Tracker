@@ -3,10 +3,13 @@ from tkinter import ttk
 from tkinter import *
 from tkinter import messagebox as msgbox
 import sqlite3
+import os
+import sys
 
 connection = None
 # Default settings sql injection
 default_settings = """INSERT OR IGNORE INTO settings (setting, value) VALUES ('dark_mode', False), ('confirm_exit', True), ('confirm_delete', True), ('api_key', ''), ('rolling_number', 10)"""
+
 
 def build_settings_frame(mainframe, apply_theme):
     header_label = ttk.Label(mainframe, text = "Settings:", font = ('Poppins',16))
@@ -53,12 +56,25 @@ def build_settings_frame(mainframe, apply_theme):
 
     rolling_combobox.bind('<<ComboboxSelected>>', lambda x: modify_setting('rolling_number', rolling_combobox.get(), apply_theme))
 
+# Gets System Specs to Port .db files into AppData / Application Support / Whatever the Linux Equivalent is
+def get_appdata_location():
+    pf = None
+    if sys.platform == 'win32': # Windows System
+        pf = os.getenv('LOCALAPPDATA')
+    elif sys.platform == 'darwin': # Mac Systems
+        pf = os.path.expanduser('~/Library/Application Support/')
     
+    program_dir = os.path.join(pf, 'GTCityStatTracker')
+    os.makedirs(program_dir, exist_ok = True)
 
+    return program_dir
+
+# Establishing file path for database
+db_path = os.path.join(get_appdata_location(), 'GT_settings.db')
 
 
 def modify_setting(setting, value, apply_theme):
-    connection = sqlite3.connect('GT_settings.db')
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     if type(value) == ttk.Entry:
@@ -85,7 +101,6 @@ def modify_setting(setting, value, apply_theme):
 def settings_startup():
     global connection
     # Creating file
-    db_file = "GT_settings.db"
 
     # SQL Statement on settings
     settings_table = """CREATE TABLE IF NOT EXISTS settings (
@@ -95,7 +110,7 @@ def settings_startup():
 
     # Try except to catch any issues with starting SQL connection
     try:
-        connection = sqlite3.connect(db_file)
+        connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
 
         # Another try except, this time for table creation
@@ -124,7 +139,7 @@ def settings_startup():
         connection.close() 
 
 def read_setting(setting):
-    connection = sqlite3.connect("GT_settings.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     try:
@@ -147,7 +162,7 @@ def read_setting(setting):
         connection.close()
 
 def read_api():
-    connection = sqlite3.connect("GT_settings.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     try:

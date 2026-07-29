@@ -1,10 +1,11 @@
 import sqlite3
 import city_database
 import settings
+import os
 from iso3166 import countries
 connection = None
 
-STAT_FILE = "GT_stat_file.db"
+db_path = os.path.join(settings.get_appdata_location(), 'GT_stat_file.db')
 
 # Counts number of correct and incorrect values to put into Numpy
 def count_correct_incorrect():
@@ -12,7 +13,7 @@ def count_correct_incorrect():
     if city_database.db_is_empty():
         return [0, 0]
 
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     try:
@@ -37,7 +38,7 @@ def count_correct_incorrect():
 
 # Gets accuracy in percentage format (xx.xx%)
 def percent_accuracy():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     if city_database.db_is_empty():
@@ -72,7 +73,7 @@ def percent_accuracy():
 
 # Deduces the average time to guess per round
 def average_time():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -102,7 +103,7 @@ def longest_streak():
 
     current_streak = 0
 
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         read_all = cursor.execute('SELECT id, correct_guess FROM city_stats ORDER BY id DESC')
@@ -139,7 +140,7 @@ def most_played_country():
 
     countries_played = {}
 
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         read_all = cursor.execute('SELECT correct_state_country FROM city_stats ORDER BY id DESC')
@@ -181,7 +182,7 @@ def times_for_correct_incorrect():
     correct_times = []
     incorrect_times = []
 
-    connection = sqlite3.connect("GT_stat_file.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
         # Reads database for both correct_guess = 1 and correct_guess = 0 and extends their respective lists
@@ -206,7 +207,7 @@ def times_for_correct_incorrect():
 
 # Deduces the average time to guess per round between correct guesses & incorrect guesses
 def average_times_correct_incorrect():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -240,7 +241,7 @@ def average_times_correct_incorrect():
 
 # Gets the fastest and slowest time where a correct guess was made
 def fastest_slowest_correct_time():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -266,7 +267,7 @@ def fastest_slowest_correct_time():
 
 # Obtains streaks and puts it in a list for histogram.
 def all_streaks():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -329,7 +330,7 @@ def average_streaks():
 
 # Gets top 5 round
 def most_correct_cities():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -346,7 +347,7 @@ def most_correct_cities():
         connection.close()
 
 def most_incorrect_cities():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
@@ -363,7 +364,7 @@ def most_incorrect_cities():
         connection.close()
 
 def most_guessed_cities():
-    connection = sqlite3.connect(STAT_FILE)
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Empty_case check
