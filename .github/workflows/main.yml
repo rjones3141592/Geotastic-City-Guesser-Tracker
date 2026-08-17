@@ -1,0 +1,70 @@
+# Workflow Code Adapted from Rahul Suryavamshi: 
+# https://dev.to/rahul_suryash/steps-to-build-binary-executables-for-python-code-with-github-actions-4k92
+
+name: "Build & Release Executables"
+
+on:
+  push:
+    tags:
+        - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+                pip install -r requirements.txt
+
+      - name: Built Using PyInstaller
+        run: pyinstaller --onefile --windowed --name GeotasticCSStatTracker --hidden-import matplotlib.backends.backend_tkagg mainframe.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeotasticCSStatTracker-${{ runner.os }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List downloaded files (Debugging)
+        run: ls -R
+
+      - name: Make files executable (Linux/Mac)
+        run: chmod +x artifacts/GeotasticCSStatTracker-* || true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: artifacts/**/*
+          
+
