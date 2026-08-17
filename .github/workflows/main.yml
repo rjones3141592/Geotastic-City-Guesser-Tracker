@@ -1,4 +1,4 @@
-# Workflow Code Adapted from Rahul Suryavamshi: 
+# Workflow Code Adopted and Adapted from Rahul Suryavamshi: 
 # https://dev.to/rahul_suryash/steps-to-build-binary-executables-for-python-code-with-github-actions-4k92
 
 name: "Build & Release Executables"
@@ -32,6 +32,18 @@ jobs:
       - name: Built Using PyInstaller
         run: pyinstaller --onefile --windowed --name GeotasticCSStatTracker --hidden-import matplotlib.backends.backend_tkagg mainframe.py
 
+      - name: Rename executable
+        run: |
+          cd dist
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            mv GeotasticCSStatTracker.exe GeotasticCSStatTracker-Windows.exe
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            mv GeotasticCSStatTracker GeotasticCSStatTracker-macOS
+          elif [ "$RUNNER_OS" == "Linux" ]; then
+            mv GeotasticCSStatTracker GeotasticCSStatTracker-Linux
+          fi
+        shell: bash
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -52,10 +64,7 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: List downloaded files (Debugging)
-        run: ls -R
-
-      - name: Make files executable (Linux/Mac)
+      - name: Make files Executable (Linux/Mac)
         run: chmod +x artifacts/GeotasticCSStatTracker-* || true
 
       - name: Create GitHub Release
