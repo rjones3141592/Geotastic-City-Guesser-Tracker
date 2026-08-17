@@ -38,7 +38,8 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
             mv GeotasticCSStatTracker.exe GeotasticCSStatTracker-Windows.exe
           elif [ "$RUNNER_OS" == "macOS" ]; then
-            mv GeotasticCSStatTracker GeotasticCSStatTracker-macOS
+            zip -r GeotasticCSStatTracker-macOS.zip GeotasticCSStatTracker.app
+            rm -rf GeotasticCSStatTracker.app
           elif [ "$RUNNER_OS" == "Linux" ]; then
             mv GeotasticCSStatTracker GeotasticCSStatTracker-Linux
           fi
