@@ -40,6 +40,7 @@ jobs:
           elif [ "$RUNNER_OS" == "macOS" ]; then
             zip -r GeotasticCSStatTracker-macOS.zip GeotasticCSStatTracker.app
             rm -rf GeotasticCSStatTracker.app
+            rm -f GeotasticCSStatTracker
           elif [ "$RUNNER_OS" == "Linux" ]; then
             mv GeotasticCSStatTracker GeotasticCSStatTracker-Linux
           fi
