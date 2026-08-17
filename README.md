@@ -56,6 +56,8 @@ This tab also is where you would import your Geoapify API key.
 
 This project is currently in version 1.0.0! 
 
+For MacOS users, you might get a "cannot be opened because it is from an unidentified developer". You can circumvent this via right-click/control clicking and hitting "open" and then "open" again.
+
 ### Updates:
 
 7/23/2025 - Holy crap I got in contact with Edutastic (dev of Geotastic), there might be a major revamp of this project with the possibility of importing exported completed highscore hunts!
@@ -73,6 +75,8 @@ This project is currently in version 1.0.0!
 8/31/2025 - Allows for editing of database city names through history table & double clicking on an entry in the history table! Note that it will only allow for changing both guessed and target cities if the round was incorrect.
 
 5/2/2026 - Importing Files now allows users to select multiple JSON files at once! It will cycle through all files and insert them into the database.
+
+8/17/2026 - Version v1.0.0 is now live! 
 
 ## Special Thanks
 
