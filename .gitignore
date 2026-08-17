@@ -11,3 +11,6 @@ __pycache__
 # Not needed yet at this time.
 .dist/
 build/
+dist/
+*.spec
+__pycache__/
